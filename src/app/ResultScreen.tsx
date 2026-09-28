@@ -51,7 +51,7 @@ export function ResultScreen({
 
   if (isEmpty) {
     return (
-      <main className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center px-6 py-16">
+      <main id="main" className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center px-6 py-16">
         <div className="card p-8 text-center">
           <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900/40">
             <SparkIcon className="h-7 w-7 text-brand-700 dark:text-brand-300" />
@@ -82,7 +82,7 @@ export function ResultScreen({
       : 0
 
   return (
-    <main className="mx-auto w-full max-w-2xl flex-1 px-6 py-12 sm:py-16">
+    <main id="main" className="mx-auto w-full max-w-2xl flex-1 px-6 py-12 sm:py-16">
       <div className="card overflow-hidden">
         <div className="bg-gradient-to-b from-brand-50 to-transparent px-8 pb-6 pt-10 text-center dark:from-brand-900/15">
           <h1 className="text-3xl font-bold tracking-tight">Your Memories are ready</h1>

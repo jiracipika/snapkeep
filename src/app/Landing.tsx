@@ -27,7 +27,7 @@ export function Landing({
   onFiles: (files: File[]) => void
 }) {
   return (
-    <main className="relative mx-auto w-full max-w-3xl flex-1 px-4 pb-20 pt-12 sm:px-6 sm:pt-16">
+    <main id="main" className="relative mx-auto w-full max-w-3xl flex-1 px-4 pb-20 pt-12 sm:px-6 sm:pt-16">
       {/* soft hero glow */}
       <div
         aria-hidden

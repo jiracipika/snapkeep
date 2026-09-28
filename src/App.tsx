@@ -54,6 +54,12 @@ export default function App() {
 
   return (
     <div className="flex min-h-svh flex-col">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-xl focus:bg-brand-500 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink-950"
+      >
+        Skip to content
+      </a>
       <Header theme={theme} onToggleTheme={toggle} />
 
       {screen === 'landing' && (

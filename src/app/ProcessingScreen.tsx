@@ -21,7 +21,7 @@ export function ProcessingScreen({
 }) {
   const stageIndex = STAGES.findIndex((s) => s.id === stage)
   return (
-    <main className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center px-6 py-16">
+    <main id="main" className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center px-6 py-16">
       <div className="card p-8">
         {error ? (
           <div className="text-center">
