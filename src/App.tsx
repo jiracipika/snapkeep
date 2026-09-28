@@ -1,13 +1,44 @@
+import { useState } from 'react'
+import { Landing } from '@/app/Landing'
+import { Header } from '@/components/Header'
+import { Footer } from '@/components/Footer'
+import type { Mode } from '@/components/ModeSelector'
+import { useTheme } from '@/components/ThemeToggle'
+
+type Screen = 'landing' | 'processing' | 'result' | 'advanced'
+
 export default function App() {
+  const { theme, toggle } = useTheme()
+  const [mode, setMode] = useState<Mode>('easy')
+  const [screen, setScreen] = useState<Screen>('landing')
+  const [files, setFiles] = useState<File[]>([])
+
   return (
-    <main className="mx-auto flex min-h-svh max-w-3xl flex-col items-center justify-center gap-4 px-6 text-center">
-      <h1 className="text-4xl font-bold tracking-tight">Snapkeep</h1>
-      <p className="text-ink-500 dark:text-ink-400">
-        Organize your Snapchat Memories — processed locally, never uploaded.
-      </p>
-      <span className="rounded-full bg-brand-100 px-3 py-1 text-xs font-semibold text-brand-800 dark:bg-brand-900/40 dark:text-brand-200">
-        scaffold OK
-      </span>
-    </main>
+    <div className="flex min-h-svh flex-col">
+      <Header theme={theme} onToggleTheme={toggle} />
+
+      {screen === 'landing' && (
+        <Landing
+          mode={mode}
+          onModeChange={setMode}
+          onFile={(file) => {
+            setFiles([file])
+            setScreen('processing')
+          }}
+        />
+      )}
+
+      {screen === 'processing' && (
+        <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
+          <p className="text-lg font-semibold">Reading your archive…</p>
+          <p className="text-sm text-ink-500">
+            {files.length > 0 ? files[0].name : ''} — processing lands in the next
+            build.
+          </p>
+        </main>
+      )}
+
+      <Footer />
+    </div>
   )
 }
