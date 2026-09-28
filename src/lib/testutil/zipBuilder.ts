@@ -79,7 +79,9 @@ export function buildStoreZip(entries: FixtureEntry[]): Uint8Array {
     u16(local, nameBytes.length)
     u16(local, 0) // extra len
     local.push(...nameBytes)
-    local.push(...e.data)
+    for (let i = 0; i < e.data.length; i += 65536) {
+      local.push(...e.data.subarray(i, Math.min(i + 65536, e.data.length)))
+    }
     if (dd) {
       u32(local, 0x08074b50)
       u32(local, crc)

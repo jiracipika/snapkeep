@@ -46,8 +46,8 @@ describe('Easy Mode end-to-end (synthetic modern export)', () => {
       writeback: { dates: true, gps: true },
     })
     expect(outcome.failures).toHaveLength(0)
-
-    const outZip = new Uint8Array(await outcome.blob.arrayBuffer())
+    expect(outcome.blob).not.toBeNull()
+    const outZip = new Uint8Array(await outcome.blob!.arrayBuffer())
     const unzipped = unzipSync(outZip)
     expect(Object.keys(unzipped)).toHaveLength(plan.entries.length + 1) // + report
 

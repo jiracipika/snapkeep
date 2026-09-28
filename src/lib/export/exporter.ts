@@ -1,4 +1,4 @@
-import { OutputZipBuilder } from '@/lib/zip/writer'
+import { StoreZipWriter } from '@/lib/zip/writer'
 import type { ArchiveSession } from '@/lib/snapchat/session'
 import type { ExportPlan } from '@/lib/snapchat/plan'
 import { insertExif } from '@/lib/media/jpeg'
@@ -6,9 +6,15 @@ import { patchMp4CreationDates } from '@/lib/media/mp4'
 
 /**
  * The exporter: turns a plan into a brand-new ZIP by streaming each item out
- * of the original archive and storing it byte-identically. The user's source
- * ZIP is never modified. Per-file failures are collected, never fatal —
- * Easy Mode recovers as much as safely possible.
+ * of the original archive and storing it byte-identically (zip64-safe, so
+ * multi-part exports over 4 GB / 65k files are fine). The user's source ZIP
+ * is never modified. Per-file failures are collected, never fatal — Easy
+ * Mode recovers as much as safely possible.
+ *
+ * Output modes:
+ *  - 'stream': every output chunk flows to the caller's sink (used with the
+ *    File System Access API so a 10 GB export never sits in memory).
+ *  - 'blob' (fallback): chunks are collected and returned as one Blob.
  *
  * Optional metadata write-back embeds capture dates (and GPS for photos)
  * losslessly: JPEGs get a minimal EXIF APP1 splice, MP4/MOV containers get
@@ -22,6 +28,10 @@ export interface WritebackOptions {
   gps: boolean
 }
 
+export type ExportOutput =
+  | { mode: 'stream'; write: (chunk: Uint8Array) => void | Promise<void> }
+  | { mode: 'blob' }
+
 export interface ExportProgress {
   phase: 'packing' | 'done'
   done: number
@@ -32,8 +42,10 @@ export interface ExportProgress {
 }
 
 export interface ExportOutcome {
-  blob: Blob
+  /** Non-null only for the 'blob' output mode. */
+  blob: Blob | null
   bytes: number
+  count: number
   failures: { name: string; reason: string }[]
 }
 
@@ -43,6 +55,7 @@ export interface ExportRunOptions {
   /** Extra small files to include, e.g. the export report. */
   extraFiles?: { path: string; bytes: Uint8Array }[]
   writeback?: WritebackOptions
+  output?: ExportOutput
 }
 
 /** Write-back needs the whole file in memory; stream huge videos untouched. */
@@ -53,13 +66,25 @@ export async function exportPlan(
   plan: ExportPlan,
   options: ExportRunOptions = {},
 ): Promise<ExportOutcome> {
-  const { onProgress, signal, extraFiles } = options
-  const builder = new OutputZipBuilder()
+  const { onProgress, signal, extraFiles, writeback } = options
+
+  let blobParts: BlobPart[] | null = null
+  let writer: StoreZipWriter
+  if (options.output?.mode === 'stream') {
+    const write = options.output.write
+    writer = new StoreZipWriter(write)
+  } else {
+    blobParts = []
+    writer = new StoreZipWriter((chunk) => {
+      blobParts!.push(chunk.slice())
+    })
+  }
+
   const failures: { name: string; reason: string }[] = []
   let bytes = 0
   const total = plan.entries.length
 
-  for (let i = 0; i < plan.entries.length; i++) {
+  for (let i = 0; i < total; i++) {
     if (signal?.aborted) throw new DOMException('Export cancelled', 'AbortError')
     const planned = plan.entries[i]!
     onProgress?.({
@@ -71,7 +96,7 @@ export async function exportPlan(
       currentName: planned.filename,
     })
     try {
-      const wb = options.writeback
+      const wb = writeback
       const canWriteBack =
         wb?.dates === true &&
         planned.item.timestampMs !== null &&
@@ -86,19 +111,35 @@ export async function exportPlan(
             lat: wb.gps ? planned.item.lat : null,
             lon: wb.gps ? planned.item.lon : null,
           })
-        } else if (planned.item.ext === 'mp4' || planned.item.ext === 'mov' || planned.item.ext === 'm4v') {
+        } else if (
+          planned.item.ext === 'mp4' ||
+          planned.item.ext === 'mov' ||
+          planned.item.ext === 'm4v'
+        ) {
           transformed = patchMp4CreationDates(raw, planned.item.timestampMs!)
         }
         bytes += transformed.length
-        await builder.add(planned.path, transformed, mtimeFor(planned.item))
-      } else {
-        await builder.addStream(planned.path, mtimeFor(planned.item), async (push) => {
-          await session.extractTo(planned.item, (chunk) => {
-            bytes += chunk.length
-            push(chunk, false)
-          })
-          push(new Uint8Array(0), true)
+        await writer.add(planned.path, transformed.length, mtimeFor(planned.item), (push) => {
+          push(transformed)
         })
+      } else {
+        const ok = await writer.add(
+          planned.path,
+          planned.item.size,
+          mtimeFor(planned.item),
+          async (push) => {
+            await session.extractTo(planned.item, async (chunk) => {
+              bytes += chunk.length
+              await push(chunk)
+            })
+          },
+        )
+        if (!ok) {
+          failures.push({
+            name: planned.item.entryName,
+            reason: 'could not be read completely and was padded — re-export to retry',
+          })
+        }
       }
     } catch (err) {
       failures.push({
@@ -111,8 +152,12 @@ export async function exportPlan(
   }
 
   for (const extra of extraFiles ?? []) {
-    await builder.add(extra.path, extra.bytes)
+    await writer.add(extra.path, extra.bytes.length, new Date(), async (push) => {
+      push(extra.bytes)
+    })
   }
+
+  await writer.finish()
 
   onProgress?.({
     phase: 'done',
@@ -122,41 +167,15 @@ export async function exportPlan(
     failures: failures.length,
     currentName: '',
   })
-  return { blob: builder.finish(), bytes, failures }
+  return {
+    blob: options.output?.mode === 'stream' ? null : new Blob(blobParts!, { type: 'application/zip' }),
+    bytes,
+    count: writer.entries,
+    failures,
+  }
 }
 
 function mtimeFor(item: { timestampMs: number | null; mtimeMs: number }): Date | undefined {
   const ms = item.timestampMs ?? (item.mtimeMs > 0 ? item.mtimeMs : undefined)
   return ms !== undefined ? new Date(ms) : undefined
-}
-
-/** Saves a blob via the File System Access API when available, else an anchor. */
-export async function saveBlob(blob: Blob, filename: string): Promise<void> {
-  const picker = (window as { showSaveFilePicker?: (opts: unknown) => Promise<FileSystemFileHandle> })
-    .showSaveFilePicker
-  if (picker) {
-    try {
-      const handle = await picker({
-        suggestedName: filename,
-        types: [{ description: 'ZIP archive', accept: { 'application/zip': ['.zip'] } }],
-      })
-      const writable = await (
-        handle as FileSystemFileHandle & { createWritable: () => Promise<WritableStream> }
-      ).createWritable()
-      await blob.stream().pipeTo(writable)
-      return
-    } catch (err) {
-      if (err instanceof DOMException && err.name === 'AbortError') return
-      // fall through to anchor download
-    }
-  }
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = filename
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-  // Give slow browsers time to start the download before revoking.
-  setTimeout(() => URL.revokeObjectURL(url), 60_000)
 }

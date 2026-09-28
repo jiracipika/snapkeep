@@ -1,11 +1,10 @@
-import { useRef, useState } from 'react'
+import { useZipExport } from '@/app/useZipExport'
 import type { ArchiveSession } from '@/lib/snapchat/session'
 import { buildPlan, DEFAULT_PLAN_OPTIONS } from '@/lib/snapchat/plan'
 import { formatHumanDate } from '@/lib/snapchat/datetime'
-import { exportPlan, saveBlob, type ExportProgress } from '@/lib/export/exporter'
 import { buildExportReport } from '@/lib/export/report'
 import { formatCount } from '@/lib/format'
-import { LockIcon, PhotoIcon, SparkIcon, VideoIcon } from '@/components/icons'
+import { AlertIcon, LockIcon, PhotoIcon, SparkIcon, VideoIcon } from '@/components/icons'
 
 export function ResultScreen({
   session,
@@ -17,36 +16,19 @@ export function ResultScreen({
   onRestart: () => void
 }) {
   const { stats, layout, warnings, metadataCount } = session.result
-  const [exportProgress, setExportProgress] = useState<ExportProgress | null>(null)
-  const [saved, setSaved] = useState(false)
-  const [failureCount, setFailureCount] = useState<number | null>(null)
-  const busyRef = useRef(false)
+  const ex = useZipExport(session)
 
   const isLinkOnly = layout === 'memories-json-only'
   const isEmpty = stats.total === 0 && !isLinkOnly
 
-  const download = async () => {
-    if (busyRef.current) return
-    busyRef.current = true
-    try {
-      const plan = buildPlan(session.result.items, DEFAULT_PLAN_OPTIONS)
-      const extra = [
-        {
-          path: 'snapchat-export-report.json',
-          bytes: buildExportReport(plan, session, { ...DEFAULT_PLAN_OPTIONS }),
-        },
-      ]
-      const outcome = await exportPlan(session, plan, {
-        onProgress: setExportProgress,
-        extraFiles: extra,
-        writeback: { dates: true, gps: true },
-      })
-      await saveBlob(outcome.blob, 'Snapchat Memories.zip')
-      setFailureCount(outcome.failures.length)
-      setSaved(true)
-    } finally {
-      busyRef.current = false
-    }
+  const download = () => {
+    const plan = buildPlan(session.result.items, DEFAULT_PLAN_OPTIONS)
+    void ex.run({
+      plan,
+      filename: 'Snapchat Memories.zip',
+      reportBytes: buildExportReport(plan, session, { ...DEFAULT_PLAN_OPTIONS }),
+      writeback: { dates: true, gps: true },
+    })
   }
 
   if (isEmpty) {
@@ -77,8 +59,8 @@ export function ResultScreen({
   }
 
   const progressPct =
-    exportProgress && exportProgress.total > 0
-      ? Math.round((exportProgress.done / exportProgress.total) * 100)
+    ex.progress && ex.progress.total > 0
+      ? Math.round((ex.progress.done / ex.progress.total) * 100)
       : 0
 
   return (
@@ -158,8 +140,18 @@ export function ResultScreen({
             </ul>
           )}
 
+          {ex.error && (
+            <div
+              className="mx-auto mt-4 flex max-w-md items-start gap-2 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-800/60 dark:bg-red-900/20 dark:text-red-300"
+              role="alert"
+            >
+              <AlertIcon className="mt-0.5 h-4 w-4 shrink-0" />
+              <span>{ex.error}</span>
+            </div>
+          )}
+
           <div className="mt-8">
-            {exportProgress && exportProgress.phase === 'packing' ? (
+            {ex.progress && ex.progress.phase === 'packing' ? (
               <div aria-live="polite">
                 <div
                   className="h-3 overflow-hidden rounded-full bg-ink-100 dark:bg-ink-800"
@@ -175,17 +167,17 @@ export function ResultScreen({
                   />
                 </div>
                 <p className="mt-2 text-center text-sm text-ink-500 dark:text-ink-400">
-                  Packing {formatCount(exportProgress.done)} of{' '}
-                  {formatCount(exportProgress.total)} — keep this tab open
+                  Packing {formatCount(ex.progress.done)} of{' '}
+                  {formatCount(ex.progress.total)} — keep this tab open
                 </p>
               </div>
-            ) : saved ? (
+            ) : ex.saved ? (
               <div className="text-center" aria-live="polite">
                 <p className="text-lg font-bold">Saved!</p>
                 <p className="mt-1 text-sm text-ink-500 dark:text-ink-400">
                   Check your downloads for <strong>Snapchat Memories.zip</strong>
-                  {failureCount !== null && failureCount > 0 && (
-                    <> — {formatCount(failureCount)} files couldn’t be packed (see the report inside)</>
+                  {ex.failureCount !== null && ex.failureCount > 0 && (
+                    <> — {formatCount(ex.failureCount)} files couldn’t be packed (see the report inside)</>
                   )}
                 </p>
                 <button type="button" className="btn-secondary mt-4" onClick={download}>
@@ -193,13 +185,21 @@ export function ResultScreen({
                 </button>
               </div>
             ) : (
-              <button
-                type="button"
-                className="btn-primary mx-auto flex w-full max-w-sm px-6 py-4 text-base"
-                onClick={download}
-              >
-                Download My Memories
-              </button>
+              <>
+                <button
+                  type="button"
+                  className="btn-primary mx-auto flex w-full max-w-sm px-6 py-4 text-base"
+                  onClick={download}
+                  disabled={stats.total === 0}
+                >
+                  Download My Memories
+                </button>
+                {ex.warning && (
+                  <p className="mx-auto mt-3 max-w-sm text-center text-xs text-amber-600 dark:text-amber-400">
+                    {ex.warning}
+                  </p>
+                )}
+              </>
             )}
           </div>
 

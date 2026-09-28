@@ -135,7 +135,7 @@ describe('OutputZipBuilder', () => {
     const mtime = new Date(Date.UTC(2020, 11, 21, 12, 18, 40))
     await builder.add('Snapchat Memories/2020/2020-12-21_12-18-40_photo.jpg', noiseBytes(9, 30_000), mtime)
     await builder.add('Snapchat Memories/2021/2021-01-01_00-00-00_video.mp4', noiseBytes(10, 2048))
-    const blob = builder.finish()
+    const blob = await builder.finish()
     expect(builder.count).toBe(2)
 
     const bytes = new Uint8Array(await blob.arrayBuffer())

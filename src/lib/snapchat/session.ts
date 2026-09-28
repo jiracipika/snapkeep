@@ -164,11 +164,16 @@ export class ArchiveSession {
 
   /** Extracts one item fully into memory (small items: previews, hashes). */
   async extractBytes(item: MediaItem): Promise<Uint8Array> {
-    let out: Uint8Array | null = null
+    const out = new Uint8Array(item.size)
+    let at = 0
     await this.extractTo(item, (chunk) => {
-      out = chunk
+      out.set(chunk, at)
+      at += chunk.length
     })
-    return out ?? new Uint8Array(0)
+    if (at !== item.size) {
+      throw new Error(`Entry "${item.entryName}" yielded ${at} bytes, expected ${item.size}`)
+    }
+    return out
   }
 }
 
