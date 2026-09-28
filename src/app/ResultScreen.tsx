@@ -39,6 +39,7 @@ export function ResultScreen({
       const outcome = await exportPlan(session, plan, {
         onProgress: setExportProgress,
         extraFiles: extra,
+        writeback: { dates: true, gps: true },
       })
       await saveBlob(outcome.blob, 'Snapchat Memories.zip')
       setFailureCount(outcome.failures.length)
@@ -209,6 +210,10 @@ export function ResultScreen({
             <p className="flex items-center gap-1.5 text-xs text-ink-400 dark:text-ink-500">
               <LockIcon className="h-3.5 w-3.5" />
               Your archive never left this device
+            </p>
+            <p className="max-w-sm text-center text-xs text-ink-400 dark:text-ink-500">
+              Capture dates and locations are embedded into your files so Google
+              Photos and Apple Photos sort them correctly.
             </p>
           </div>
         </div>

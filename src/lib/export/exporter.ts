@@ -1,13 +1,26 @@
 import { OutputZipBuilder } from '@/lib/zip/writer'
 import type { ArchiveSession } from '@/lib/snapchat/session'
 import type { ExportPlan } from '@/lib/snapchat/plan'
+import { insertExif } from '@/lib/media/jpeg'
+import { patchMp4CreationDates } from '@/lib/media/mp4'
 
 /**
  * The exporter: turns a plan into a brand-new ZIP by streaming each item out
  * of the original archive and storing it byte-identically. The user's source
  * ZIP is never modified. Per-file failures are collected, never fatal —
  * Easy Mode recovers as much as safely possible.
+ *
+ * Optional metadata write-back embeds capture dates (and GPS for photos)
+ * losslessly: JPEGs get a minimal EXIF APP1 splice, MP4/MOV containers get
+ * their creation_time atoms patched — no pixels or video streams touched.
  */
+
+export interface WritebackOptions {
+  /** Embed capture dates (EXIF / QuickTime atoms) for Photos-app compatibility. */
+  dates: boolean
+  /** Additionally embed GPS coordinates in photo EXIF. */
+  gps: boolean
+}
 
 export interface ExportProgress {
   phase: 'packing' | 'done'
@@ -29,7 +42,11 @@ export interface ExportRunOptions {
   signal?: AbortSignal
   /** Extra small files to include, e.g. the export report. */
   extraFiles?: { path: string; bytes: Uint8Array }[]
+  writeback?: WritebackOptions
 }
+
+/** Write-back needs the whole file in memory; stream huge videos untouched. */
+const WRITEBACK_SIZE_LIMIT = 128 * 1024 * 1024
 
 export async function exportPlan(
   session: ArchiveSession,
@@ -54,13 +71,35 @@ export async function exportPlan(
       currentName: planned.filename,
     })
     try {
-      await builder.addStream(planned.path, mtimeFor(planned.item), async (push) => {
-        await session.extractTo(planned.item, (chunk) => {
-          bytes += chunk.length
-          push(chunk, false)
+      const wb = options.writeback
+      const canWriteBack =
+        wb?.dates === true &&
+        planned.item.timestampMs !== null &&
+        planned.item.size <= WRITEBACK_SIZE_LIMIT &&
+        (planned.item.kind === 'photo' || planned.item.kind === 'video')
+      if (canWriteBack) {
+        const raw = await session.extractBytes(planned.item)
+        let transformed = raw
+        if (planned.item.kind === 'photo') {
+          transformed = insertExif(raw, {
+            dateMs: planned.item.timestampMs!,
+            lat: wb.gps ? planned.item.lat : null,
+            lon: wb.gps ? planned.item.lon : null,
+          })
+        } else if (planned.item.ext === 'mp4' || planned.item.ext === 'mov' || planned.item.ext === 'm4v') {
+          transformed = patchMp4CreationDates(raw, planned.item.timestampMs!)
+        }
+        bytes += transformed.length
+        await builder.add(planned.path, transformed, mtimeFor(planned.item))
+      } else {
+        await builder.addStream(planned.path, mtimeFor(planned.item), async (push) => {
+          await session.extractTo(planned.item, (chunk) => {
+            bytes += chunk.length
+            push(chunk, false)
+          })
+          push(new Uint8Array(0), true)
         })
-        push(new Uint8Array(0), true)
-      })
+      }
     } catch (err) {
       failures.push({
         name: planned.item.entryName,

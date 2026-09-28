@@ -20,6 +20,7 @@ export function ExportPanel({
   const [saved, setSaved] = useState(false)
   const [failureCount, setFailureCount] = useState<number | null>(null)
   const [includeReport, setIncludeReport] = useState(true)
+  const [writeback, setWriteback] = useState(true)
   const busy = useRef(false)
 
   const run = async () => {
@@ -38,6 +39,7 @@ export function ExportPanel({
       const outcome = await exportPlan(session, plan, {
         onProgress: setProgress,
         extraFiles,
+        writeback: { dates: writeback, gps: writeback },
       })
       await saveBlob(outcome.blob, `${options.rootName || 'Snapchat Memories'}.zip`)
       setFailureCount(outcome.failures.length)
@@ -63,6 +65,23 @@ export function ExportPanel({
           value={formatCount(plan.skipped.length + excludedCount)}
         />
       </dl>
+
+      <label className="mt-4 flex cursor-pointer items-start gap-2 text-sm">
+        <input
+          type="checkbox"
+          className="mt-0.5 h-4 w-4 accent-brand-600"
+          checked={writeback}
+          onChange={(e) => setWriteback(e.target.checked)}
+        />
+        <span>
+          <span className="font-medium">Embed capture dates & GPS</span>
+          <span className="block text-xs text-ink-400">
+            Losslessly writes dates (and photo locations) into the files so
+            Google Photos and Apple Photos sort and map them correctly. Original
+            image and video quality is never touched.
+          </span>
+        </span>
+      </label>
 
       <label className="mt-4 flex cursor-pointer items-center gap-2 text-sm">
         <input

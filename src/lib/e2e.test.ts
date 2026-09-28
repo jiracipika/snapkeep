@@ -4,6 +4,8 @@ import { ArchiveSession } from '@/lib/snapchat/session'
 import { buildPlan, DEFAULT_PLAN_OPTIONS } from '@/lib/snapchat/plan'
 import { exportPlan } from '@/lib/export/exporter'
 import { buildExportReport } from '@/lib/export/report'
+import { readExifDateTimeOriginal } from '@/lib/media/jpeg'
+import { readMp4CreationDate } from '@/lib/media/mp4'
 import { readZipIndex, bufferRangeReader } from '@/lib/zip/reader'
 import {
   buildInAppExport,
@@ -41,6 +43,7 @@ describe('Easy Mode end-to-end (synthetic modern export)', () => {
           bytes: buildExportReport(plan, session, { ...DEFAULT_PLAN_OPTIONS }),
         },
       ],
+      writeback: { dates: true, gps: true },
     })
     expect(outcome.failures).toHaveLength(0)
 
@@ -48,12 +51,16 @@ describe('Easy Mode end-to-end (synthetic modern export)', () => {
     const unzipped = unzipSync(outZip)
     expect(Object.keys(unzipped)).toHaveLength(plan.entries.length + 1) // + report
 
-    // Byte-identical media (stored, never recompressed)
+    // Write-back: photos carry EXIF capture dates + GPS, videos carry
+    // QuickTime creation dates — what Google/Apple Photos read on import.
     const outPhoto =
       unzipped['Snapchat Memories/2023/2023-08-14_19-32-05_photo.jpg']!
+    expect(readExifDateTimeOriginal(outPhoto)).toBe(Date.UTC(2023, 7, 14, 19, 32, 5))
+    const outVideo =
+      unzipped['Snapchat Memories/2023/2023-08-14_19-32-11_video.mp4']!
+    expect(readMp4CreationDate(outVideo)).toBe(Date.UTC(2023, 7, 14, 19, 32, 11))
     const original = fakeJpeg(1)
-    expect(outPhoto.length).toBe(original.length)
-    for (let i = 0; i < original.length; i++) expect(outPhoto[i]).toBe(original[i])
+    expect(outPhoto.length).toBeGreaterThan(original.length) // EXIF added, pixels intact
 
     // The source archive bytes are untouched (we never wrote to them)
     expect(source[0]).toBe(0x50) // still a valid zip signature
