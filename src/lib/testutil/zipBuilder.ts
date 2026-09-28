@@ -18,6 +18,8 @@ export interface FixtureEntry {
   encryptedFlag?: boolean
   /** Compression method byte (8 = deflate; fixture data must then be deflated raw). */
   method?: number
+  /** Write date=0/time=0 DOS fields (decodes to an unset mtime). */
+  zeroMtime?: boolean
   /** Override the central-directory compressed size (simulates corrupt/truncated). */
   cdSizeOverride?: number
 }
@@ -52,7 +54,9 @@ export function buildStoreZip(entries: FixtureEntry[]): Uint8Array {
 
   for (const e of entries) {
     const nameBytes = new TextEncoder().encode(e.name)
-    const { date, time } = dosDateTime(e.mtime ?? new Date(Date.UTC(2024, 0, 1, 12, 30, 0)))
+    const { date, time } = e.zeroMtime
+      ? { date: 0, time: 0 }
+      : dosDateTime(e.mtime ?? new Date(Date.UTC(2024, 0, 1, 12, 30, 0)))
     const crc = crc32(e.data)
     const dd = e.dataDescriptor ?? false
     const z64 = e.forceZip64 ?? false
