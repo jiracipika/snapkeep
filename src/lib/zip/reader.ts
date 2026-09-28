@@ -93,7 +93,7 @@ const nameDecoder = new TextDecoder('utf-8', { fatal: false })
 
 function decodeName(bytes: Uint8Array): string {
   const raw = nameDecoder.decode(bytes)
-  // Strip control characters that could confuse downstream path logic.
+  // oxlint-disable-next-line no-control-regex -- stripping control chars is the point
   return raw.replace(/[\u0000-\u001f\u007f]/g, '_')
 }
 

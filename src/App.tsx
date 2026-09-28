@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { Landing } from '@/app/Landing'
 import { ProcessingScreen } from '@/app/ProcessingScreen'
 import { ResultScreen } from '@/app/ResultScreen'
-import { ArchiveInfo } from '@/app/advanced/ArchiveInfo'
+import { AdvancedScreen } from '@/app/advanced/AdvancedScreen'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import type { Mode } from '@/components/ModeSelector'
-import { useTheme } from '@/components/ThemeToggle'
+import { useTheme } from '@/components/useTheme'
 import { ArchiveSession, type ScanStage } from '@/lib/snapchat/session'
 
 type Screen = 'landing' | 'processing' | 'result' | 'advanced'
@@ -78,25 +78,11 @@ export default function App() {
       )}
 
       {screen === 'advanced' && session && (
-        <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">
-          <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight">Advanced Mode</h1>
-              <p className="mt-1 text-sm text-ink-500 dark:text-ink-400">
-                Archive inspector · the full media browser, renaming and export
-                options arrive in the next build.
-              </p>
-            </div>
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={() => setScreen('result')}
-            >
-              Back to Easy view
-            </button>
-          </div>
-          <ArchiveInfo session={session} />
-        </main>
+        <AdvancedScreen
+          session={session}
+          onBack={() => setScreen('result')}
+          onRestart={restart}
+        />
       )}
 
       <Footer />

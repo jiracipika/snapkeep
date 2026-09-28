@@ -92,6 +92,7 @@ const RESERVED_WINDOWS_NAMES = new Set([
  */
 export function sanitizeSegment(input: string, maxLength = 160): string {
   let s = input.normalize('NFC')
+  // oxlint-disable-next-line no-control-regex -- stripping control chars is the point
   s = s.replace(/[/\\:*?"<>|\u0000-\u001f\u007f]/g, '_')
   s = s.replace(/\s+/g, ' ').trim()
   s = s.replace(/^[.\s]+/, '')
