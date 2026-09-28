@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Landing } from '@/app/Landing'
 import { ProcessingScreen } from '@/app/ProcessingScreen'
 import { ResultScreen } from '@/app/ResultScreen'
@@ -51,6 +51,11 @@ export default function App() {
     setScanError(null)
     setScreen('landing')
   }
+
+  // Each screen is a fresh page: don't inherit the previous scroll position.
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [screen])
 
   return (
     <div className="flex min-h-svh flex-col">
