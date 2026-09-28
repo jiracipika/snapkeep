@@ -103,6 +103,8 @@ export interface ScanResult {
   layout: ArchiveLayout
   items: MediaItem[]
   stats: ScanStats
+  /** Number of metadata records found (memories_history.json entries). */
+  metadataCount: number
   diagnostics: ArchiveDiagnostics
   warnings: string[]
 }

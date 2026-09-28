@@ -20,11 +20,11 @@ const STEPS = [
 export function Landing({
   mode,
   onModeChange,
-  onFile,
+  onFiles,
 }: {
   mode: Mode
   onModeChange: (mode: Mode) => void
-  onFile: (file: File) => void
+  onFiles: (files: File[]) => void
 }) {
   return (
     <main className="relative mx-auto w-full max-w-3xl flex-1 px-4 pb-20 pt-12 sm:px-6 sm:pt-16">
@@ -48,7 +48,7 @@ export function Landing({
       </section>
 
       <section className="mt-10" aria-label="Upload your Snapchat export">
-        <DropZone onFile={onFile} />
+        <DropZone onFiles={onFiles} />
         <p className="mt-4 flex items-center justify-center gap-2 text-center text-sm text-ink-500 dark:text-ink-400">
           <LockIcon className="h-4 w-4 shrink-0 text-brand-600 dark:text-brand-400" />
           <span>

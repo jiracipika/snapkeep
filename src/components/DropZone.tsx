@@ -2,10 +2,10 @@ import { useCallback, useRef, useState } from 'react'
 import { UploadIcon } from './icons'
 
 export function DropZone({
-  onFile,
+  onFiles,
   disabled = false,
 }: {
-  onFile: (file: File) => void
+  onFiles: (files: File[]) => void
   disabled?: boolean
 }) {
   const [dragOver, setDragOver] = useState(false)
@@ -23,17 +23,17 @@ export function DropZone({
       e.preventDefault()
       setDragOver(false)
       if (disabled) return
-      const file = e.dataTransfer.files?.[0]
-      if (file) onFile(file)
+      const files = Array.from(e.dataTransfer.files ?? [])
+      if (files.length > 0) onFiles(files)
     },
-    [disabled, onFile],
+    [disabled, onFiles],
   )
 
   return (
     <div
       role="button"
       tabIndex={disabled ? -1 : 0}
-      aria-label="Drop your Snapchat ZIP export here, or press Enter to choose a file"
+      aria-label="Drop your Snapchat ZIP export here, or press Enter to choose files"
       aria-disabled={disabled}
       onClick={() => !disabled && inputRef.current?.click()}
       onKeyDown={(e) => {
@@ -69,20 +69,21 @@ export function DropZone({
       <span className="text-sm text-ink-500 dark:text-ink-400">
         or{' '}
         <span className="font-semibold text-brand-700 underline decoration-brand-300 underline-offset-2 dark:text-brand-300">
-          choose a file
+          choose files
         </span>
       </span>
       <span className="text-xs text-ink-400 dark:text-ink-500">
-        your_download.zip · stays on this device
+        all parts of a multi-file export can be dropped together · stays on this device
       </span>
       <input
         ref={inputRef}
         type="file"
         accept=".zip,application/zip,application/x-zip-compressed"
+        multiple
         className="sr-only"
         onChange={(e) => {
-          const file = e.target.files?.[0]
-          if (file) onFile(file)
+          const files = Array.from(e.target.files ?? [])
+          if (files.length > 0) onFiles(files)
           e.target.value = ''
         }}
       />
