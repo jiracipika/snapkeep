@@ -3,8 +3,10 @@ import type { ArchiveSession } from '@/lib/snapchat/session'
 import { buildPlan, DEFAULT_PLAN_OPTIONS } from '@/lib/snapchat/plan'
 import { formatHumanDate } from '@/lib/snapchat/datetime'
 import { buildExportReport } from '@/lib/export/report'
-import { formatCount } from '@/lib/format'
+import { formatBytes, formatCount } from '@/lib/format'
 import { AlertIcon, LockIcon, PhotoIcon, SparkIcon, VideoIcon } from '@/components/icons'
+
+const LARGE_EXPORT_BYTES = 1.5 * 1024 ** 3
 
 export function ResultScreen({
   session,
@@ -20,6 +22,8 @@ export function ResultScreen({
 
   const isLinkOnly = layout === 'memories-json-only'
   const isEmpty = stats.total === 0 && !isLinkOnly
+  const totalSourceBytes = session.sources.reduce((n, s) => n + s.size, 0)
+  const isLargeExport = totalSourceBytes > LARGE_EXPORT_BYTES
 
   const download = () => {
     const plan = buildPlan(session.result.items, DEFAULT_PLAN_OPTIONS)
@@ -132,11 +136,19 @@ export function ResultScreen({
             </p>
           )}
 
-          {warnings.length > 0 && (
+          {(warnings.length > 0 || isLargeExport) && (
             <ul className="mx-auto mt-4 max-w-md space-y-1 text-xs text-ink-400 dark:text-ink-500">
               {warnings.slice(0, 3).map((w) => (
                 <li key={w}>• {w}</li>
               ))}
+              {isLargeExport && (
+                <li>
+                  • Large export: {formatBytes(totalSourceBytes)} across{' '}
+                  {session.sources.length} file{session.sources.length === 1 ? '' : 's'}.
+                  Packing runs on your device — keep this tab open until the file
+                  is saved.
+                </li>
+              )}
             </ul>
           )}
 

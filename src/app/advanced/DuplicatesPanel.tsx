@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { ArchiveSession } from '@/lib/snapchat/session'
 import type { MediaItem } from '@/lib/snapchat/types'
+import { DUPLICATE_HASH_MAX_BYTES, hashableForDuplicates } from '@/lib/snapchat/duplicates'
 import { formatBytes, formatCount } from '@/lib/format'
 import { formatDateParts } from '@/lib/snapchat/datetime'
 
@@ -28,6 +29,7 @@ export function DuplicatesPanel({
   const [groups, setGroups] = useState<DuplicateGroup[] | null>(null)
   const [progress, setProgress] = useState<{ done: number; total: number } | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [skippedLarge, setSkippedLarge] = useState(0)
   const [busy, setBusy] = useState(false)
 
   const scan = async () => {
@@ -36,9 +38,12 @@ export function DuplicatesPanel({
     setError(null)
     try {
       const candidates = session.result.items.filter((i) => i.size > 0)
+      // Hashing needs the whole file in memory: skip absurdly large entries.
+      const hashable = candidates.filter((i) => hashableForDuplicates(i.size))
+      setSkippedLarge(candidates.length - hashable.length)
       // Group by exact size first — only hash groups with more than one file.
       const bySize = new Map<number, MediaItem[]>()
-      for (const item of candidates) {
+      for (const item of hashable) {
         const list = bySize.get(item.size) ?? []
         list.push(item)
         bySize.set(item.size, list)
@@ -161,6 +166,13 @@ export function DuplicatesPanel({
               </>
             )}
           </p>
+          {skippedLarge > 0 && (
+            <p className="mt-2 text-xs text-ink-400 dark:text-ink-500">
+              {formatCount(skippedLarge)} file{skippedLarge === 1 ? '' : 's'} over{' '}
+              {formatBytes(DUPLICATE_HASH_MAX_BYTES)} were skipped by the scan (too
+              large to hash in a browser) and are treated as unique.
+            </p>
+          )}
           {groups.length > 0 && (
             <button type="button" className="btn-ghost mt-2 !px-2 !py-1 text-xs" onClick={excludeAllSuggested}>
               Mark all duplicates beyond the first (keep one of each)

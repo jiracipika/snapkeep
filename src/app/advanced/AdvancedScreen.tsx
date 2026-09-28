@@ -125,8 +125,10 @@ export function AdvancedScreen({
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Advanced Mode</h1>
           <p className="mt-1 text-sm text-ink-500 dark:text-ink-400">
-            {formatCount(session.result.stats.total)} memories from{' '}
-            {session.sources.map((s) => s.name).join(', ')} · processed locally
+            {formatCount(session.result.stats.total)} memories ·{' '}
+            {formatBytes(session.sources.reduce((n, s) => n + s.size, 0))} across{' '}
+            {session.sources.length} file{session.sources.length === 1 ? '' : 's'} ·
+            processed locally
           </p>
         </div>
         <div className="flex gap-2">
