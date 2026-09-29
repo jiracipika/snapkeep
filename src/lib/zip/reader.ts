@@ -175,22 +175,24 @@ export async function readZipIndex(read: RangeReader, fileSize: number): Promise
     if (extraEnd > cd.length) throw new ZipFormatError('Corrupted entry metadata in archive.')
 
     // ZIP64 extra field: fields appear in order (size, compressedSize, offset)
-    // but only those whose 32-bit CD value was 0xFFFFFFFF.
+    // but only those whose 32-bit CD value was 0xFFFFFFFF — an entry past 4GB
+    // in a big archive typically carries ONLY the offset (8-byte extra).
     let epos = extraStart
     while (epos + 4 <= extraEnd) {
       const id = readU16(cd, epos)
       const sz = readU16(cd, epos + 2)
-      if (id === 0x0001 && sz >= 24) {
+      if (id === 0x0001) {
+        const fieldsEnd = Math.min(epos + 4 + sz, extraEnd)
         let f = epos + 4
-        if (usize === 0xffffffff && f + 8 <= epos + 4 + sz) {
+        if (usize === 0xffffffff && f + 8 <= fieldsEnd) {
           usize = readU64(cd, f)
           f += 8
         }
-        if (csize === 0xffffffff && f + 8 <= epos + 4 + sz) {
+        if (csize === 0xffffffff && f + 8 <= fieldsEnd) {
           csize = readU64(cd, f)
           f += 8
         }
-        if (offset === 0xffffffff && f + 8 <= epos + 4 + sz) {
+        if (offset === 0xffffffff && f + 8 <= fieldsEnd) {
           offset = readU64(cd, f)
           f += 8
         }

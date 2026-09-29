@@ -21,6 +21,7 @@ export class StoreZipWriter {
   private central: Uint8Array[] = []
   private centralLen = 0
   private anyEntryZip64 = false
+  private anyOffsetZip64 = false
   private finished = false
   private onChunk: (chunk: Uint8Array) => void | Promise<void>
   private streamThreshold: number
@@ -28,9 +29,12 @@ export class StoreZipWriter {
   constructor(
     onChunk: (chunk: Uint8Array) => void | Promise<void>,
     streamThreshold = 256 * 1024 * 1024,
+    /** Absolute file offset where this archive begins (zip64 offsets need it). */
+    baseOffset = 0,
   ) {
     this.onChunk = onChunk
     this.streamThreshold = streamThreshold
+    this.offset = baseOffset
   }
 
   get entries(): number {
@@ -73,6 +77,7 @@ export class StoreZipWriter {
         throw new Error(`Entry "${path}" produced ${written} bytes, expected ${size}`)
       }
       const crcVal = crc32Final(crc.v)
+      const entryOffset = this.offset
       await this.emit(
         localHeader(nameBytes, {
           flags: 0x800,
@@ -85,15 +90,17 @@ export class StoreZipWriter {
         }),
       )
       for (const part of parts) await this.emit(part)
+      const offsetZip64 = entryOffset >= 0xffffffff
+      if (offsetZip64) this.anyOffsetZip64 = true
       this.writeCentralEntry(nameBytes, {
         flags: 0x800,
         time,
         date,
         crc: crcVal,
         size,
-        offset: this.offset - size - localHeaderSize(nameBytes, entryZip64),
+        offset: entryOffset,
         entryZip64,
-        offsetZip64: false,
+        offsetZip64,
       })
       this.entryCount++
       return true
@@ -102,6 +109,8 @@ export class StoreZipWriter {
     // Large entry: stream with a data descriptor. Local header carries the
     // (known) sizes; the CRC is only knowable after the bytes flow.
     const entryOffset = this.offset
+    const offsetZip64 = entryOffset >= 0xffffffff
+    if (offsetZip64) this.anyOffsetZip64 = true
     await this.emit(
       localHeader(nameBytes, {
         flags: 0x800 | 0x08,
@@ -159,7 +168,7 @@ export class StoreZipWriter {
       size,
       offset: entryOffset,
       entryZip64,
-      offsetZip64: entryOffset >= 0xffffffff,
+      offsetZip64,
     })
     this.entryCount++
     return !failed
@@ -175,27 +184,33 @@ export class StoreZipWriter {
     const cdSize = this.offset - cdOffset
 
     const countsOverflow = this.entryCount >= 0xffff
-    const offsetsOverflow = cdOffset >= 0xffffffff || cdSize >= 0xffffffff
+    const offsetsOverflow =
+      cdOffset >= 0xffffffff || cdSize >= 0xffffffff || this.anyOffsetZip64
     const outputZip64 = this.anyEntryZip64 || countsOverflow || offsetsOverflow
 
     if (outputZip64) {
-      const z64 = new Uint8Array(56 + 20)
+      // EOCD64 record (56 bytes), then a locator that points at IT (not at
+      // the central directory — getting this wrong makes extractors reject
+      // the whole archive).
+      const eocd64Offset = this.offset
+      const z64 = new Uint8Array(56)
       const dv = new DataView(z64.buffer)
       dv.setUint32(0, 0x06064b50, true)
-      dv.setUint32(4, 44, true) // size of remaining record
+      dv.setUint32(4, 44, true) // size of remaining record (64-bit field, high dword 0)
       dv.setUint16(12, 45, true)
       dv.setUint16(14, 45, true)
-      dv.setUint32(24, this.entryCount, true)
-      dv.setUint32(32, this.entryCount, true)
-      dv.setUint32(40, cdSize, true)
-      dv.setUint32(48, cdOffset, true)
+      setU64(dv, 24, this.entryCount) // entries on this disk
+      setU64(dv, 32, this.entryCount) // total entries
+      setU64(dv, 40, cdSize)
+      setU64(dv, 48, cdOffset)
       await this.emit(z64)
 
       const loc = new Uint8Array(20)
       const ldv = new DataView(loc.buffer)
       ldv.setUint32(0, 0x07064b50, true)
-      ldv.setUint32(8, cdOffset, true)
-      ldv.setUint32(16, 1, true)
+      ldv.setUint32(4, 0, true) // disk with the EOCD64
+      setU64(ldv, 8, eocd64Offset) // absolute offset of the EOCD64 record
+      ldv.setUint32(16, 1, true) // total disks
       await this.emit(loc)
     }
 
