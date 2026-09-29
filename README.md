@@ -2,7 +2,7 @@
 
 Turn your Snapchat data export into normal photos and videos you can actually keep — free, and processed entirely in your browser.
 
-**Live site: [https://snapkeep-seven.vercel.app](https://snapkeep-seven.vercel.app)**
+**Live site: [https://snapkeeper.vercel.app](https://snapkeeper.vercel.app)**
 
 > ## 🔒 Your Snapchat archive is processed locally in your browser. Your photos and videos are not uploaded to this application's servers.
 >
@@ -19,7 +19,7 @@ Snapkeep is not affiliated with Snap Inc. Snapchat is a trademark of Snap Inc.
 
 1. You request your data from Snapchat (accounts.snapchat.com → My Data, with
    "Export your Memories" enabled) and download the ZIP(s).
-2. You drop the ZIP on [Snapkeep](https://snapkeep-seven.vercel.app).
+2. You drop the ZIP on [Snapkeep](https://snapkeeper.vercel.app).
 3. Everything is processed locally: the archive is scanned, Snapchat
    Memories metadata is parsed and matched to media, capture dates are
    recovered, and sensible filenames/folders are generated.
