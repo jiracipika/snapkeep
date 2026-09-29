@@ -3,6 +3,7 @@ import { Landing } from '@/app/Landing'
 import { ProcessingScreen } from '@/app/ProcessingScreen'
 import { ResultScreen } from '@/app/ResultScreen'
 import { AdvancedScreen } from '@/app/advanced/AdvancedScreen'
+import { AdRail, BottomAd } from '@/components/AdSlot'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import type { Mode } from '@/components/ModeSelector'
@@ -67,35 +68,47 @@ export default function App() {
       </a>
       <Header theme={theme} onToggleTheme={toggle} />
 
-      {screen === 'landing' && (
-        <Landing mode={mode} onModeChange={setMode} onFiles={startScan} />
-      )}
+      {/*
+        Ad rails are hidden below xl (1280px) and fixed at 160px each, so the
+        middle column keeps more than a 4:3 width-to-height share of common
+        desktop viewports (e.g. 1440×900 leaves ~1024px of middle width).
+      */}
+      <div className="mx-auto flex w-full max-w-[1400px] flex-1 items-stretch justify-center gap-6 px-4 sm:px-6">
+        <AdRail side="left" busy={screen === 'processing'} />
+        <div className="flex min-w-0 flex-1 flex-col">
+          {screen === 'landing' && (
+            <Landing mode={mode} onModeChange={setMode} onFiles={startScan} />
+          )}
 
-      {screen === 'processing' && (
-        <ProcessingScreen
-          stage={scanError ? 'error' : scanStage}
-          fileCount={fileCount}
-          error={scanError}
-          onCancel={restart}
-        />
-      )}
+          {screen === 'processing' && (
+            <ProcessingScreen
+              stage={scanError ? 'error' : scanStage}
+              fileCount={fileCount}
+              error={scanError}
+              onCancel={restart}
+            />
+          )}
 
-      {screen === 'result' && session && (
-        <ResultScreen
-          session={session}
-          onAdvanced={() => setScreen('advanced')}
-          onRestart={restart}
-        />
-      )}
+          {screen === 'result' && session && (
+            <ResultScreen
+              session={session}
+              onAdvanced={() => setScreen('advanced')}
+              onRestart={restart}
+            />
+          )}
 
-      {screen === 'advanced' && session && (
-        <AdvancedScreen
-          session={session}
-          onBack={() => setScreen('result')}
-          onRestart={restart}
-        />
-      )}
+          {screen === 'advanced' && session && (
+            <AdvancedScreen
+              session={session}
+              onBack={() => setScreen('result')}
+              onRestart={restart}
+            />
+          )}
+        </div>
+        <AdRail side="right" busy={screen === 'processing'} />
+      </div>
 
+      <BottomAd />
       <Footer />
     </div>
   )

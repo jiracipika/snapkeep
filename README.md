@@ -91,12 +91,47 @@ oversized multi-GB archives.
 
 - **No uploads.** All parsing, matching, thumbnailing and ZIP creation runs
   in your browser (Web APIs only; no server-side processing exists).
-- **No analytics.** The site ships zero tracking scripts.
+- **No analytics.** The site ships zero analytics or tracking scripts.
+- **Ads, not data.** The page carries Google AdSense ad slots (see
+  [Monetization](#monetization)). Ad requests never contain anything from your
+  archive — no filenames, dates, locations or bytes — because that data never
+  leaves the device.
 - **No third-party requests with your data.** Nothing from your archive —
   filenames, dates, locations, captions, or bytes — ever leaves the device.
 - The optional export report contains paths, dates and sources only; GPS and
   captions are excluded unless you explicitly enable locations.
 - Your original archive is opened read-only; exports are brand-new ZIPs.
+
+## Monetization
+
+Snapkeep stays free through non-invasive ads (Google AdSense). The layout is
+designed around the ads, never the other way around:
+
+- Two slim 160px side rails, shown only on screens ≥1280px wide so the main
+  column keeps more than a 4:3 width-to-height share of the viewport.
+- One responsive leaderboard band at the very bottom of the page.
+- While an archive is processing, each rail carries an extra unit.
+- Friendly house cards ("Ads keep Snapkeep running") fill any slot without a
+  configured ad unit — no empty ad boxes, ever.
+
+Configuration lives in `src/config/monetization.ts`:
+
+- `adsenseClient` — the `ca-pub-…` publisher ID; the matching loader script is
+  in `index.html` `<head>` (this is also the AdSense site-ownership snippet).
+- `adSlots.rail` / `adSlots.bottom` — ad-unit IDs from AdSense → Ads → By ad
+  unit. Paste IDs to replace the house cards with real units: two wide
+  skyscrapers (160×600) for the rails, one responsive display unit for the
+  bottom band.
+- `public/ads.txt` — served at `/ads.txt`; keep its `pub-…` line in sync with
+  the AdSense account.
+
+Operational notes:
+
+- With **Auto ads** enabled in the AdSense dashboard, Google may place
+  additional units on its own. Turn off anchor and vignette formats there
+  (Ads → By site → Auto ads) to keep the page non-invasive.
+- For EEA/UK visitors, enable Google's consent messaging (AdSense → Privacy &
+  messaging) so ad personalization follows consent rules.
 
 ## Development setup
 
