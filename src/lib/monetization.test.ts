@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { adUnitReady, houseMessage } from './monetization'
+import { adUnitReady, donateLink, houseMessage } from './monetization'
 
 describe('adUnitReady', () => {
   it('needs both a publisher and a slot id', () => {
@@ -8,6 +8,24 @@ describe('adUnitReady', () => {
     expect(adUnitReady('ca-pub-123', '')).toBe(false)
     expect(adUnitReady('  ', '456')).toBe(false)
     expect(adUnitReady('ca-pub-123', '   ')).toBe(false)
+  })
+})
+
+describe('donateLink', () => {
+  it('accepts https paypal.com links', () => {
+    const url =
+      'https://www.paypal.com/donate/?business=9RM6LCXG5E6JC&currency_code=CAD'
+    expect(donateLink(url)).toBe(url)
+    expect(donateLink('https://paypal.com/donate/?business=X')).toBe(
+      'https://paypal.com/donate/?business=X',
+    )
+  })
+
+  it('rejects non-paypal or non-https values so a bad paste never ships', () => {
+    expect(donateLink('http://paypal.com/donate')).toBeNull()
+    expect(donateLink('https://evil.example/donate')).toBeNull()
+    expect(donateLink('')).toBeNull()
+    expect(donateLink('   ')).toBeNull()
   })
 })
 

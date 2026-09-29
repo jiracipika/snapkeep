@@ -13,4 +13,8 @@ export const monetization = {
     // Responsive horizontal (leaderboard) band at the very bottom.
     bottom: '',
   },
+
+  // PayPal donate button in the header ("Buy me a coffee").
+  paypalDonateUrl:
+    'https://www.paypal.com/donate/?business=9RM6LCXG5E6JC&no_recurring=0&item_name=Buy+me+a+coffee+%3A%29&currency_code=CAD',
 }

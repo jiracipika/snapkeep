@@ -125,6 +125,10 @@ Configuration lives in `src/config/monetization.ts`:
 - `public/ads.txt` — served at `/ads.txt`; keep its `pub-…` line in sync with
   the AdSense account.
 
+A yellow **Donate** button (heart icon) in the header links to the
+maintainer's PayPal "buy me a coffee" page — configured via
+`paypalDonateUrl` in the same config file.
+
 Operational notes:
 
 - With **Auto ads** enabled in the AdSense dashboard, Google may place

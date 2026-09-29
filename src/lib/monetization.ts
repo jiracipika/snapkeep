@@ -1,6 +1,17 @@
+import { monetization } from '@/config/monetization'
+
 /** A display-ad unit can only render when both the publisher and slot IDs exist. */
 export function adUnitReady(client: string, slotId: string): boolean {
   return client.trim() !== '' && slotId.trim() !== ''
+}
+
+/**
+ * PayPal donate URL for the header button. Returns null unless the value is
+ * an https paypal.com link, so a bad paste never ships as a dead button.
+ */
+export function donateLink(url: string = monetization.paypalDonateUrl): string | null {
+  const u = url.trim()
+  return /^https:\/\/(www\.)?paypal\.com\//.test(u) ? u : null
 }
 
 const HOUSE_MESSAGES = [
