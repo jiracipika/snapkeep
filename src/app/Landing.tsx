@@ -1,6 +1,7 @@
 import { DropZone } from '@/components/DropZone'
 import { LockIcon } from '@/components/icons'
 import { ModeSelector, type Mode } from '@/components/ModeSelector'
+import { FAQS } from '@/config/seo'
 
 const STEPS = [
   {
@@ -87,6 +88,20 @@ export function Landing({
             </li>
           ))}
         </ol>
+      </section>
+
+      <section className="mt-16" aria-label="Frequently asked questions">
+        <h2 className="text-center text-sm font-semibold uppercase tracking-widest text-ink-400 dark:text-ink-500">
+          Frequently asked questions
+        </h2>
+        <div className="mx-auto mt-6 grid max-w-2xl gap-4">
+          {FAQS.map((faq) => (
+            <div key={faq.q} className="card p-5">
+              <h3 className="font-semibold">{faq.q}</h3>
+              <p className="mt-1 text-sm leading-relaxed text-ink-500 dark:text-ink-400">{faq.a}</p>
+            </div>
+          ))}
+        </div>
       </section>
     </main>
   )

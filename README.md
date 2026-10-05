@@ -215,3 +215,10 @@ Archive input is treated as hostile:
   are JPEG/MP4, so this rarely matters).
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for what's next and why.
+
+## Discoverability (SEO)
+
+Canonical, Open Graph/Twitter cards, JSON-LD structured data (WebApplication +
+FAQPage), `robots.txt`, `sitemap.xml`, and a 1200×630 social preview image are
+all pinned by tests in `src/seo.test.ts`. The working checklist (keyword
+targets, Search Console steps, rules) lives in [docs/SEO.md](docs/SEO.md).
