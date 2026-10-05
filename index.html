@@ -3,12 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Snapkeep — Export Snapchat Memories as Photos &amp; Videos</title>
+    <title>Export Snapchat Memories as Photos &amp; Videos — Snapkeep</title>
     <meta
       name="description"
-      content="Turn your Snapchat My Data ZIP into clean, dated photos and videos — free, right in your browser. Nothing is uploaded; your archive never leaves your device."
+      content="Turn your Snapchat data export into clean, dated photos and videos. Free, no sign-up, 100% in-browser — your Memories never leave your device."
     />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
     <link rel="canonical" href="https://snapkeeper.vercel.app/" />
     <meta name="theme-color" content="#f2d500" />
 
@@ -16,10 +18,10 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Snapkeep" />
     <meta property="og:url" content="https://snapkeeper.vercel.app/" />
-    <meta property="og:title" content="Snapkeep — Export Snapchat Memories as Photos &amp; Videos" />
+    <meta property="og:title" content="Snapkeep — Export Snapchat Memories (Free, Private, In-Browser)" />
     <meta
       property="og:description"
-      content="Turn your Snapchat My Data ZIP into clean, dated photos and videos — free, right in your browser. Nothing is uploaded; your archive never leaves your device."
+      content="Drop your Snapchat My Data ZIP and get clean, dated photos and videos back — free, no sign-up, nothing ever leaves your device."
     />
     <meta property="og:image" content="https://snapkeeper.vercel.app/og-image.png" />
     <meta property="og:image:width" content="1200" />
@@ -32,10 +34,10 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Snapkeep — Export Snapchat Memories as Photos &amp; Videos" />
+    <meta name="twitter:title" content="Snapkeep — Export Snapchat Memories (Free, Private, In-Browser)" />
     <meta
       name="twitter:description"
-      content="Turn your Snapchat My Data ZIP into clean, dated photos and videos — free, right in your browser. Nothing is uploaded; your archive never leaves your device."
+      content="Drop your Snapchat My Data ZIP and get clean, dated photos and videos back — free, no sign-up, nothing ever leaves your device."
     />
     <meta name="twitter:image" content="https://snapkeeper.vercel.app/og-image.png" />
 
@@ -43,6 +45,13 @@
       {
         "@context": "https://schema.org",
         "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://snapkeeper.vercel.app/#website",
+            "url": "https://snapkeeper.vercel.app/",
+            "name": "Snapkeep",
+            "inLanguage": "en"
+          },
           {
             "@type": "WebApplication",
             "@id": "https://snapkeeper.vercel.app/#app",
@@ -53,7 +62,7 @@
             "browserRequirements": "Requires JavaScript",
             "inLanguage": "en",
             "isAccessibleForFree": true,
-            "description": "Turn your Snapchat My Data ZIP into clean, dated photos and videos — free, right in your browser. Nothing is uploaded; your archive never leaves your device.",
+            "description": "Turn your Snapchat data export into clean, dated photos and videos. Free, no sign-up, 100% in-browser — your Memories never leave your device.",
             "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
             "featureList": [
               "Clean, dated filenames for every photo and video",
@@ -61,7 +70,7 @@
               "Automatic photo and video pair matching",
               "Original capture dates written back into EXIF and MP4 metadata",
               "100% local processing — nothing is uploaded",
-              "Free to use"
+              "Free to use, no sign-up required"
             ]
           },
           {
@@ -90,6 +99,14 @@
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text": "No. Your ZIP is opened and processed entirely inside your browser. No file, photo, or video ever leaves your device."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do you need my Snapchat username or password?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No — never. Snapkeep only reads the ZIP you already downloaded from Snapchat yourself. Any site asking for your Snapchat login to recover Memories is a phishing risk; Snapkeep never asks."
                 }
               },
               {
@@ -131,11 +148,11 @@
   <body>
     <div id="root"></div>
     <noscript>
-      <h1 style="font-family: sans-serif">Snapkeep — Export Snapchat Memories as Photos &amp; Videos</h1>
+      <h1 style="font-family: sans-serif">Export Snapchat Memories as Photos &amp; Videos — Snapkeep</h1>
       <p style="font-family: sans-serif; max-width: 40rem">
         Turn your Snapchat &ldquo;My Data&rdquo; ZIP export into clean, dated photos and videos, sorted
-        by year. Snapkeep runs entirely in your browser: nothing is uploaded and your archive never
-        leaves your device. Please enable JavaScript to use it.
+        by year. Free, no sign-up, and processed entirely in your browser: nothing is uploaded and
+        your archive never leaves your device. Please enable JavaScript to use it.
       </p>
     </noscript>
     <script type="module" src="/src/main.tsx"></script>

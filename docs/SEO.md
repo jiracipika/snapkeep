@@ -21,23 +21,34 @@ References this checklist is built from:
 
 ## Shipped (2026-10-05)
 
-- [x] Unique 55-char title with primary keyword ("Export Snapchat Memories…")
-- [x] 155-char meta description with benefit + privacy differentiator
+- [x] Unique 55-char title, **keyword-first**: "Export Snapchat Memories as Photos
+      & Videos — Snapkeep" (CTR: search term in the first 3 words, not the brand)
+- [x] 144-char meta description with action hook ("Turn your…", ends on privacy)
+- [x] `robots` meta `max-image-preview:large, max-snippet:-1` — lets Google show a
+      large thumbnail + full description instead of a truncated snippet
 - [x] `<link rel="canonical">` to the live domain
 - [x] Full Open Graph set (og:url, og:site_name, og:image 1200×630 + dimensions/alt/locale)
 - [x] Twitter `summary_large_image` card
-- [x] JSON-LD `@graph`: `WebApplication` (free offer, featureList) + `FAQPage`
+- [x] JSON-LD `@graph`: `WebSite` + `WebApplication` (free offer, featureList) + `FAQPage`
+- [x] FAQ includes "Do you need my Snapchat username or password?" — targets the
+      "is this safe / recover snapchat memories" cluster and differentiates from
+      phishing-style login-harvesting sites (trust = clicks)
 - [x] FAQPage mirrored by a **visible** FAQ section on the landing page (Google requires
       the marked-up content to be user-visible; `src/seo.test.ts` fails on any drift)
+- [x] Keyword-rich visible copy: H1 "Export your Snapchat Memories", trust chips
+      (free / no sign-up / no uploads / open source), "What is Snapkeep?" section
+      covering long-tail phrasing (My Data, camera roll, Google/Apple Photos)
 - [x] `public/robots.txt` (allow all + Sitemap pointer)
 - [x] `public/sitemap.xml` (single canonical URL, lastmod 2026-10-05)
 - [x] `public/og-image.png` — rendered from `/tmp/snapkeep-og.html` recipe with
       chrome-headless-shell at 1200×630 (regenerate if branding changes)
+- [x] `public/apple-touch-icon.png` (180×180 raster from favicon.svg; rendered via
+      `/tmp/snapkeep-touchicon.html`) — iOS home-screen + favicon fallback
 - [x] `<noscript>` landing copy so non-JS crawlers/link-unfuzzers see real content
 - [x] `lang="en"`, one `h1`, semantic `h2`/`h3` outline, `og:locale`
 - [x] preconnect to the AdSense origin (keeps LCP clean with ads enabled)
-- [x] Tests: `src/seo.test.ts` pins head tags, JSON-LD validity, FAQ sync, robots,
-      sitemap, and PNG dimensions
+- [x] Tests: `src/seo.test.ts` pins head tags, robots meta, JSON-LD validity, FAQ
+      sync, robots.txt, sitemap.xml, and PNG dimensions
 
 ## Next (user actions + future work)
 

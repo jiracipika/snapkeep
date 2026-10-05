@@ -16,10 +16,11 @@ function jsonLd(): { '@graph': Array<Record<string, unknown>> } {
 }
 
 describe('seo: head tags', () => {
-  it('has title, description, and canonical', () => {
+  it('has title, description, canonical, and snippet-friendly robots meta', () => {
     expect(indexHtml).toContain(
-      '<title>Snapkeep — Export Snapchat Memories as Photos &amp; Videos</title>',
+      '<title>Export Snapchat Memories as Photos &amp; Videos — Snapkeep</title>',
     )
+    expect(indexHtml).toContain('name="robots" content="index, follow, max-image-preview:large, max-snippet:-1"')
     expect(indexHtml).toMatch(
       new RegExp(`<link rel="canonical" href="${CANONICAL.replace(/\//g, '\\/')}" />`),
     )

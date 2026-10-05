@@ -37,7 +37,7 @@ export function Landing({
 
       <section className="text-center">
         <h1 className="text-balance text-4xl font-bold tracking-tight sm:text-5xl">
-          Organize your{' '}
+          Export your{' '}
           <span className="bg-gradient-to-r from-brand-600 to-brand-400 bg-clip-text text-transparent dark:from-brand-300 dark:to-brand-500">
             Snapchat Memories
           </span>
@@ -46,6 +46,16 @@ export function Landing({
           Turn your Snapchat data export into normal photos and videos you can
           actually keep.
         </p>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+          {['100% free', 'No sign-up', 'No uploads', 'Open source'].map((chip) => (
+            <span
+              key={chip}
+              className="rounded-full border border-ink-200 bg-ink-50 px-3 py-1 text-xs font-medium text-ink-600 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-300"
+            >
+              {chip}
+            </span>
+          ))}
+        </div>
       </section>
 
       <section className="mt-10" aria-label="Upload your Snapchat export">
@@ -88,6 +98,19 @@ export function Landing({
             </li>
           ))}
         </ol>
+      </section>
+
+      <section className="mt-16 max-w-2xl text-center" aria-label="What is Snapkeep">
+        <h2 className="text-sm font-semibold uppercase tracking-widest text-ink-400 dark:text-ink-500">
+          What is Snapkeep?
+        </h2>
+        <p className="mt-4 text-pretty leading-relaxed text-ink-500 dark:text-ink-400">
+          Snapkeep is a free online tool that opens the ZIP Snapchat sends when you
+          request your data (the &ldquo;My Data&rdquo; export) and turns it into normal, dated
+          photos and videos — ready for your camera roll, Google Photos, or Apple
+          Photos. Everything runs locally in your browser: no uploads, no sign-up,
+          no watermarks, and your original archive is never modified.
+        </p>
       </section>
 
       <section className="mt-16" aria-label="Frequently asked questions">

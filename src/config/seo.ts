@@ -15,6 +15,10 @@ export const FAQS = [
     a: 'No. Your ZIP is opened and processed entirely inside your browser. No file, photo, or video ever leaves your device.',
   },
   {
+    q: 'Do you need my Snapchat username or password?',
+    a: 'No — never. Snapkeep only reads the ZIP you already downloaded from Snapchat yourself. Any site asking for your Snapchat login to recover Memories is a phishing risk; Snapkeep never asks.',
+  },
+  {
     q: 'Why are some videos split into multiple files?',
     a: 'Snapchat exports longer videos as several consecutive MP4 parts. Snapkeep detects them, gives every photo and video a clean, dated filename, and organizes everything into year folders so you can find any Memory fast.',
   },
