@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>What's Inside Your Snapchat "My Data" Export | Snapkeep</title>
+    <meta
+      name="description"
+      content="memories_history.json, split MP4s, machine filenames — a plain-English map of Snapchat's data export, and where your Memories media actually hides."
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <link rel="canonical" href="https://snapkeeper.vercel.app/guide/snapchat-my-data-explained/" />
+    <meta name="theme-color" content="#f2d500" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Snapkeep" />
+    <meta property="og:url" content="https://snapkeeper.vercel.app/guide/snapchat-my-data-explained/" />
+    <meta property="og:title" content="What's Inside Your Snapchat &quot;My Data&quot; Export" />
+    <meta
+      property="og:description"
+      content="memories_history.json, split MP4s, machine filenames — a plain-English map of what Snapchat's data export actually contains, and where your Memories media hides."
+    />
+    <meta property="og:image" content="https://snapkeeper.vercel.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="What's Inside Your Snapchat &quot;My Data&quot; Export" />
+    <meta
+      name="twitter:description"
+      content="memories_history.json, split MP4s, machine filenames — a plain-English map of what Snapchat's data export actually contains, and where your Memories media hides."
+    />
+    <meta name="twitter:image" content="https://snapkeeper.vercel.app/og-image.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Snapkeep", "item": "https://snapkeeper.vercel.app/" },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "What's inside your Snapchat My Data export",
+                "item": "https://snapkeeper.vercel.app/guide/snapchat-my-data-explained/"
+              }
+            ]
+          },
+          {
+            "@type": "Article",
+            "headline": "What's inside your Snapchat My Data export",
+            "description": "A plain-English map of Snapchat's data export: the metadata files, split MP4 videos, and where your Memories media actually lives.",
+            "datePublished": "2026-10-06",
+            "inLanguage": "en",
+            "author": { "@type": "Organization", "name": "Snapkeep" },
+            "publisher": { "@type": "Organization", "name": "Snapkeep" },
+            "mainEntityOfPage": "https://snapkeeper.vercel.app/guide/snapchat-my-data-explained/"
+          }
+        ]
+      }
+    </script>
+
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4128325832827761"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      try {
+        var t = localStorage.getItem('snapkeep-theme')
+        if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches))
+          document.documentElement.classList.add('dark')
+      } catch (e) {}
+    </script>
+    <script type="module" src="/src/guides/theme.ts"></script>
+  </head>
+
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="shell">
+        <a href="/" class="logo" aria-label="Snapkeep home">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <rect width="32" height="32" rx="8" fill="#f2d500" />
+            <path
+              d="M16 6.5c-4.1 0-7.4 3.3-7.4 7.4v9.9c0 .8.9 1.2 1.5.7l2-1.6 2.1 1.6c.5.4 1.2.4 1.7 0l2.1-1.6 2.1 1.6c.5.4 1.2.4 1.7 0l2.1-1.6 2 1.6c.6.5 1.5.1 1.5-.7v-9.9c0-4.1-3.3-7.4-7.4-7.4z"
+              fill="#fff"
+            />
+            <circle cx="12.6" cy="13.2" r="1.5" fill="#f2d500" />
+            <circle cx="19.4" cy="13.2" r="1.5" fill="#f2d500" />
+          </svg>
+          Snapkeep
+        </a>
+        <nav class="header-nav" aria-label="Site">
+          <a
+            class="btn-donate"
+            href="https://www.paypal.com/donate/?business=9RM6LCXG5E6JC&no_recurring=0&item_name=Buy+me+a+coffee+%3A%29&currency_code=CAD"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Donate via PayPal"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg>
+            <span class="donate-label">Donate</span>
+          </a>
+          <a
+            class="icon-btn"
+            href="https://github.com/jiracipika/snapkeep"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View source on GitHub"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.35.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .3.2.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z" />
+            </svg>
+          </a>
+          <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1zm0-18a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V2a1 1 0 0 1 1-1zm9 8a1 1 0 1 1 0 2h-1a1 1 0 1 1 0-2h1zM4 9a1 1 0 1 1 0 2H3a1 1 0 1 1 0-2h1zm14.95-6.66a1 1 0 0 1 0 1.41l-.71.71a1 1 0 0 1-1.41-1.42l.7-.7a1 1 0 0 1 1.42 0zM7.17 16.95a1 1 0 0 1 0 1.41l-.71.71a1 1 0 1 1-1.41-1.41l.7-.71a1 1 0 0 1 1.42 0zm12.02 1.41a1 1 0 0 1-1.41 0l-.71-.71a1 1 0 0 1 1.42-1.41l.7.71a1 1 0 0 1 0 1.41zM5.05 5.05a1 1 0 0 1 1.41 0l.71.71A1 1 0 0 1 5.75 7.17l-.7-.71a1 1 0 0 1 0-1.41z" />
+            </svg>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="shell">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Snapkeep</a> <span aria-hidden="true">/</span> My Data export, explained
+      </nav>
+
+      <article>
+        <h1>What's Inside Your Snapchat "My Data" Export</h1>
+        <p class="updated">Last updated October 2026 · Free · Works in any browser</p>
+
+        <p>
+          When Snapchat emails you your data archive, unzipping it feels like opening a ransom
+          note: cryptic folders, files named like hashes, half of it JSON. It's built to
+          satisfy data-portability rules, not to be browsed. Here's the map — what each piece
+          is, and where the stuff you actually care about (your photos and videos) hides.
+        </p>
+
+        <h2>The headline: it's a metadata archive, not an album</h2>
+        <p>
+          The export is organized around <em>records</em>, not pictures. For every Memory,
+          Snapchat includes a line of metadata (when it was captured, whether it's a photo or
+          a video) and — if you requested the Memories export — the media file itself. If you
+          didn't enable the Memories option when requesting, the archive contains only the
+          metadata, with no media in it at all.
+        </p>
+
+        <h2>The file that matters: <code>memories_history.json</code></h2>
+        <p>
+          This is the index of your Memories. It's plain JSON — openable in any text editor —
+          with one entry per Memory: the capture date and time, the media type, and Snapchat's
+          internal references. It is also the only place the <em>true</em> capture dates live,
+          which matters because the media files themselves don't carry them (more on that
+          below).
+        </p>
+        <p>
+          <a href="/">Snapkeep</a> reads dates from this file first, falls back to dates in
+          filenames when an entry is missing, and then to the archive's own timestamps — it
+          never invents a date that isn't in your export somewhere.
+        </p>
+
+        <h2>Where the media actually lives</h2>
+        <p>
+          The photos and videos are in the archive's media folders, under machine-generated
+          names. Two quirks to know about:
+        </p>
+        <ul>
+          <li><strong>Longer videos are split into consecutive MP4 parts.</strong> One
+            Snapchat memory of a two-minute video can arrive as several MP4 segments that
+            play back-to-back.</li>
+          <li><strong>Photos and videos of the same moment aren't labeled as pairs.</strong>
+            The pairing only becomes obvious once the metadata is applied.</li>
+        </ul>
+
+        <h2>Everything else in the ZIP</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>What you see</th>
+              <th>What it is</th>
+              <th>Do you need it?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>memories_history.json</code></td>
+              <td>The index of your Memories with true capture dates</td>
+              <td>Yes — this is where dates come from</td>
+            </tr>
+            <tr>
+              <td>Media folders</td>
+              <td>The actual photo and video files, hash-named</td>
+              <td>Yes — this is the payload</td>
+            </tr>
+            <tr>
+              <td>Split MP4 files</td>
+              <td>Longer videos chunked into consecutive parts</td>
+              <td>Yes — they belong to real Memories</td>
+            </tr>
+            <tr>
+              <td>Account, login, and friend records</td>
+              <td>Account details, login history, friend list, and similar records</td>
+              <td>No — not needed for your photos and videos</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Why the dates are such a mess</h2>
+        <p>
+          If you extract the media files directly, your camera roll or photo library sorts
+          them by the file's own timestamp — which is the moment the archive was created or
+          downloaded, not the moment you captured the Memory. Years of photos collapse into
+          one meaningless pile. That's why the date belongs <em>inside</em> the file (EXIF for
+          photos, MP4 metadata for videos), which is exactly what Snapkeep writes back.
+        </p>
+
+        <div class="tip">
+          <strong>Privacy note:</strong> the archive contains personal records — login
+          history, account details, your friend list. Store it privately, and think twice
+          before handing the whole ZIP to any website or app.
+        </div>
+
+        <h2>Questions people ask</h2>
+        <h3>Can I open <code>memories_history.json</code> myself?</h3>
+        <p>Yes — it's plain JSON. Any text editor will show it, and it's the fastest way to
+          sanity-check how many Memories your export should contain.</p>
+        <h3>Why does Snapchat split videos into parts?</h3>
+        <p>Long recordings are chunked into consecutive segments when the archive is built.
+          They play in sequence; they just arrive as separate files.</p>
+        <h3>Is it safe to upload my export to an online converter?</h3>
+        <p>Be careful: the ZIP contains personal data well beyond your photos. Snapkeep
+          processes the file entirely inside your browser — nothing is uploaded — but any
+          service that <em>does</em> ask you to upload this archive is asking for your login
+          history and friend list too.</p>
+
+        <div class="cta-card">
+          <p>Want the export as clean, dated, sorted files instead of a puzzle?</p>
+          <a class="btn-primary" href="/">Open Snapkeep — it's free</a>
+        </div>
+      </article>
+
+      <section class="more-guides" aria-label="More guides">
+        <h2>Keep reading</h2>
+        <ul>
+          <li>
+            <a href="/guide/how-to-export-snapchat-memories/">How to export Snapchat Memories</a>
+            <p class="desc">The full step-by-step: requesting your data and downloading the ZIP.</p>
+          </li>
+          <li>
+            <a href="/guide/back-up-memories-before-deleting-snapchat/">Deleting Snapchat? Back up your Memories first</a>
+            <p class="desc">Deletion is permanent after the grace window — do this before you confirm.</p>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell">
+        <p>Your Snapchat archive is processed locally in your browser. Your photos and videos
+          are never uploaded.</p>
+        <nav aria-label="Guides">
+          <a href="/guide/how-to-export-snapchat-memories/">Export guide</a>
+          <a href="/guide/back-up-memories-before-deleting-snapchat/">Backup guide</a>
+          <a href="/guide/snapchat-my-data-explained/">My Data explainer</a>
+        </nav>
+        <p class="fine">Not affiliated with Snap Inc. Snapchat is a trademark of Snap Inc.</p>
+      </div>
+    </footer>
+  </body>
+</html>

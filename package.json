@@ -14,6 +14,7 @@
     "inspect": "tsx scripts/inspect-archive.ts"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "fflate": "^0.8.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"

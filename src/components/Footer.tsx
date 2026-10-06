@@ -17,6 +17,17 @@ export function Footer() {
             device.
           </p>
         )}
+        <nav aria-label="Guides" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs">
+          <a href="/guide/how-to-export-snapchat-memories/" className="hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
+            How to export Snapchat Memories
+          </a>
+          <a href="/guide/back-up-memories-before-deleting-snapchat/" className="hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
+            Back up before deleting
+          </a>
+          <a href="/guide/snapchat-my-data-explained/" className="hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
+            My Data export, explained
+          </a>
+        </nav>
         <p className="text-xs">
           Not affiliated with Snap Inc. Snapchat is a trademark of Snap Inc.
         </p>
