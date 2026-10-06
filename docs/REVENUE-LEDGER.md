@@ -23,6 +23,18 @@ counted — only observed payouts.
   renders automatically once a Stripe Payment Link is pasted into
   `src/config/monetization.ts` → `stripeTipUrl`; strict `tipLink()` validation
   + tests. Button hidden while unconfigured.
+- 2026-10-06 — **AdSense ad units CREATED and wired** (this is the day ads
+  went live): `snapkeep-rail-1` 160×600 → slot `8284596304`, `snapkeep-rail-2`
+  160×600 → `2601769648`, `snapkeep-bottom` responsive → `2292893863`.
+  Committed `0baea46`, deployed, all 3 IDs verified in the served bundle.
+  First ad impressions should serve within minutes–an hour.
+- 2026-10-06 — Dashboard (via computer-use sign-in): 4 of the 11 prepped sites
+  added + ownership-verified + review requested — hand-signs-not-crimes,
+  auracard (code method), signflow-five + outfitweather (ads.txt method; the
+  code-snippet crawler failed on both, ads.txt passed). Remaining 7 sites are
+  code-ready; dashboard began throttling the add-site dialog after 5 adds in
+  an hour — finish them in a later session (each ≈1 min: New site → URL →
+  Save → Verify via ads.txt → Request review).
 - 2026-10-06 — Multi-site AdSense rollout (same pub `ca-pub-4128325832827761`):
   loader + `ads.txt` shipped on 11 more properties — gangsign-gg, auracard,
   signflow, outfitweather, vindica, avolab.ca, aetherhands, fingerjam,
