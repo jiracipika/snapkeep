@@ -8,12 +8,24 @@ Pair with `docs/REVENUE-LEDGER.md` (the scoreboard).
 | Rail | State | Blocker |
 | --- | --- | --- |
 | PayPal donate (header) | **Live** — `paypal.com/donate` button on every page | none; earns with existing traffic today |
+| Stripe card tip (header) | **Code-ready** — "Tip" button renders automatically once a link is configured | You create a **Stripe Payment Link** (~2 min; the Stripe *account* itself is KYC + bank, human-only) |
 | AdSense display slots | Wired end-to-end in code (loader, `ads.txt`, `AdSlot` components with house-card fallback) | **3 ad-unit IDs must be created in the AdSense dashboard** (human, ~5 min) |
 | AdSense Auto ads | Loader script present on app + guide pages, so auto units serve the moment the toggle is on | check toggle in dashboard |
 | Traffic | 3 guide pages + sitemap + IndexNow + internal linking shipped | Google re-crawl takes days–weeks |
 | Analytics | Vercel Web Analytics on app + guides | none — read it in the Vercel dashboard → snapkeep → Analytics |
 
 ## The 5-minute human checklist (only steps needing dashboard access)
+
+0. **Stripe card tip** — [dashboard.stripe.com](https://dashboard.stripe.com) →
+   Payment links → New → one-time product "Tip for Snapkeep" → enable
+   **"pay what you want"** → copy the `https://buy.stripe.com/…` link → paste
+   it into `src/config/monetization.ts` → `stripeTipUrl` (or hand it over).
+   The header "Tip" button appears automatically; validation
+   (`tipLink` in `src/lib/monetization.ts`) refuses anything that isn't a
+   buy.stripe.com payment link, so a bad paste can't ship. Note: the Stripe
+   account itself (KYC, bank account) is human-only — no CLI, Vercel's or
+   Stripe's, can create it. Static guide pages stay PayPal-only until this
+   link exists, then it gets hardcoded there too (tests pin no drift).
 
 1. **Create the 3 ad units** — AdSense → Ads → By ad unit → New ad unit (Display ads):
    - `snapkeep-rail-1` → fixed size **160×600**

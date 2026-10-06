@@ -17,4 +17,9 @@ export const monetization = {
   // PayPal donate button in the header ("Buy me a coffee").
   paypalDonateUrl:
     'https://www.paypal.com/donate/?business=9RM6LCXG5E6JC&no_recurring=0&item_name=Buy+me+a+coffee+%3A%29&currency_code=CAD',
+
+  // Stripe Payment Link for card tips ("Tip" button, next to Donate). Create
+  // it in the Stripe dashboard → Payment links (pay-what-you-want, one-time)
+  // and paste the https://buy.stripe.com/... URL here. Empty = button hidden.
+  stripeTipUrl: '',
 }

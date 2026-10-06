@@ -19,6 +19,10 @@ counted — only observed payouts.
 - 2026-10-06 — Vercel Web Analytics on app + guides (traffic becomes measurable).
 - 2026-10-06 — IndexNow key + `scripts/submit-indexnow.mjs` (Bing/Seznam/Yandex/Naver).
 - 2026-10-06 — `docs/MONETIZATION.md`: the 5-minute human checklist (3 ad-unit IDs).
+- 2026-10-06 — Stripe-ready tip rail: "Tip" card button (header, next to Donate)
+  renders automatically once a Stripe Payment Link is pasted into
+  `src/config/monetization.ts` → `stripeTipUrl`; strict `tipLink()` validation
+  + tests. Button hidden while unconfigured.
 
 ## Payouts (observed only)
 

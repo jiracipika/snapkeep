@@ -133,3 +133,12 @@ export function HeartIcon(props: IconProps) {
     </svg>
   )
 }
+
+export function CardIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <rect width="20" height="14" x="2" y="5" rx="2" />
+      <path d="M2 10h20" />
+    </svg>
+  )
+}

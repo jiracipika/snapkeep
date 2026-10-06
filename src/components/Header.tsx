@@ -1,5 +1,5 @@
-import { donateLink } from '@/lib/monetization'
-import { GithubIcon, GhostLogo, HeartIcon } from './icons'
+import { donateLink, tipLink } from '@/lib/monetization'
+import { CardIcon, GithubIcon, GhostLogo, HeartIcon } from './icons'
 import { ThemeToggle } from './ThemeToggle'
 
 export function Header({
@@ -10,6 +10,7 @@ export function Header({
   onToggleTheme: () => void
 }) {
   const donate = donateLink()
+  const tip = tipLink()
   return (
     <header className="sticky top-0 z-40 border-b border-ink-200/60 bg-white/80 backdrop-blur-md dark:border-ink-800/60 dark:bg-ink-950/80">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
@@ -28,6 +29,18 @@ export function Header({
             >
               <HeartIcon className="h-4 w-4" />
               <span className="hidden sm:inline">Donate</span>
+            </a>
+          )}
+          {tip && (
+            <a
+              href={tip}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary !rounded-full !px-4 !py-2 text-sm"
+              aria-label="Tip with a card via Stripe"
+            >
+              <CardIcon className="h-4 w-4" />
+              <span className="hidden sm:inline">Tip</span>
             </a>
           )}
           <a

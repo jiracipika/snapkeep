@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { adUnitReady, donateLink, houseMessage } from './monetization'
+import { adUnitReady, donateLink, houseMessage, tipLink } from './monetization'
+import { monetization } from '@/config/monetization'
 
 describe('adUnitReady', () => {
   it('needs both a publisher and a slot id', () => {
@@ -26,6 +27,29 @@ describe('donateLink', () => {
     expect(donateLink('https://evil.example/donate')).toBeNull()
     expect(donateLink('')).toBeNull()
     expect(donateLink('   ')).toBeNull()
+  })
+})
+
+describe('tipLink', () => {
+  it('accepts live and test buy.stripe.com payment links', () => {
+    const live = 'https://buy.stripe.com/9AQ6oEgO12ab3cD4ef'
+    expect(tipLink(live)).toBe(live)
+    const test = 'https://buy.stripe.com/test_9AQ6oEgO12ab'
+    expect(tipLink(test)).toBe(test)
+  })
+
+  it('rejects empty, non-https, off-domain, or smuggled values so a bad paste never ships', () => {
+    expect(tipLink('')).toBeNull()
+    expect(tipLink('   ')).toBeNull()
+    expect(tipLink('http://buy.stripe.com/abc')).toBeNull()
+    expect(tipLink('https://evil.com/buy.stripe.com/abc')).toBeNull()
+    expect(tipLink('https://buy.stripe.com.evil.com/abc')).toBeNull()
+    expect(tipLink('https://stripe.com/abc')).toBeNull()
+    expect(tipLink('https://buy.stripe.com/abc?query=1')).toBeNull()
+  })
+
+  it('config exposes the stripeTipUrl key (empty until a Payment Link exists)', () => {
+    expect(monetization).toHaveProperty('stripeTipUrl')
   })
 })
 
