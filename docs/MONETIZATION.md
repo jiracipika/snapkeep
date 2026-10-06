@@ -48,3 +48,13 @@ Pair with `docs/REVENUE-LEDGER.md` (the scoreboard).
 - Ads are labeled "Ad", the privacy line (archive never leaves the device) is
   repeated everywhere, and ads never intercept the tool's core flow.
 - Guide pages are original, accurate content — no doorway spam.
+
+## Multi-site rollout (2026-10-06, same pub account)
+
+Loader + `ads.txt` shipped on: gangsign-gg, auracard, signflow, outfitweather,
+vindica, avolab.ca, aetherhands, fingerjam, handstrument, Dashverse,
+ZenithShift. Remaining per-site step (dashboard): AdSense → Sites → **Add site**
+→ enter URL → **Request review** (code is already live, so review can pass).
+Do them in batches — Google reviews each site individually. Skipped for now:
+Godot-exported games (need an export-template patch + rebuild), pitch-therapy
+(env-blocked), santosg-resume (not ours to monetize), newsltr.ca (thin landing).

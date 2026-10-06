@@ -23,6 +23,14 @@ counted — only observed payouts.
   renders automatically once a Stripe Payment Link is pasted into
   `src/config/monetization.ts` → `stripeTipUrl`; strict `tipLink()` validation
   + tests. Button hidden while unconfigured.
+- 2026-10-06 — Multi-site AdSense rollout (same pub `ca-pub-4128325832827761`):
+  loader + `ads.txt` shipped on 11 more properties — gangsign-gg, auracard,
+  signflow, outfitweather, vindica, avolab.ca, aetherhands, fingerjam,
+  handstrument, Dashverse, ZenithShift — all tests/typechecks green, all
+  pushed (Vercel auto-deploys). None can serve ads until each is added in the
+  AdSense dashboard and passes site review (human/agent-with-login step).
+  Godot-exported games (breakrun, friday-evacuation, printshop-sim) skipped
+  this pass — loader needs an export-template patch + rebuild.
 
 ## Payouts (observed only)
 
