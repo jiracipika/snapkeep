@@ -9,9 +9,9 @@ export const monetization = {
   adSlots: {
     // 160×600 wide skyscrapers for the side rails; the second one only
     // renders while an archive is being processed.
-    rail: ['', ''],
+    rail: ['8284596304', '2601769648'],
     // Responsive horizontal (leaderboard) band at the very bottom.
-    bottom: '',
+    bottom: '2292893863',
   },
 
   // PayPal donate button in the header ("Buy me a coffee").
