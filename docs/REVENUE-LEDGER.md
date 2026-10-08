@@ -59,6 +59,12 @@ counted — only observed payouts.
   kept dying), and `sitemap.xml` submitted ("Sitemap submitted
   successfully"; first fetch pending).
 
+- 2026-10-07 — **SEO content slice (+2 guides, 414a6a4)**: `transfer-snapchat-memories-to-new-phone` (HowTo schema;
+  targets "transfer snapchat memories to new phone") and `recover-deleted-snapchat-memories` (Article schema; honest
+  paths + scam warning; targets "recover deleted snapchat memories"). Cross-linked from the app footer and all 5
+  guides (each guide now links the other 4 + home), sitemap 6 URLs, IndexNow 200 (6 URLs submitted), GSC property
+  live → both new URLs inspected + "Indexing requested". Tests 103 green.
+
 ## Payouts (observed only)
 
 | Date | Rail | Amount | Reels earned |
