@@ -58,3 +58,23 @@ ZenithShift. Remaining per-site step (dashboard): AdSense → Sites → **Add si
 Do them in batches — Google reviews each site individually. Skipped for now:
 Godot-exported games (need an export-template patch + rebuild), pitch-therapy
 (env-blocked), santosg-resume (not ours to monetize), newsltr.ca (thin landing).
+
+## Content roadmap (evidence-based, Bing Keyword Research 2026-10-07)
+
+Seed "snapchat memories": 527 impressions / 3mo on Bing (US 232, UK 60, CA 30,
+IN 25) — Bing ≈ ¼ of Google volume, so ~2k/3mo Google-equivalent. Related
+keywords worth a page, in priority order:
+
+1. **"when is snapchat deleting memories" (255) + "when will snapchat delete
+   memories" (76)** — recurring rumor-panic (a competitor blog fed the Sept
+   2026 wave). Write a calm, dated "Is Snapchat deleting Memories?" explainer:
+   no, Memories last until you delete them or the account goes; where the
+   rumor comes from; how to make yourself immune (export + backup). Top pick.
+2. **"snapchat memories on computer" (51)** — viewing Memories on the web
+   (limitations) vs. getting them ONTO the computer via a data export.
+3. Skipped as navigational/clickbait: "snapchat login" (1M), "snap web"
+   (97.7K), "snap chat" (66.5K) — login-intent traffic we shouldn't and
+   don't want to bait.
+
+Competitive note: snapeasy.io is a direct competitor ("Get your Snapchat
+memories back. For good.") with a blog playing the same queries.
