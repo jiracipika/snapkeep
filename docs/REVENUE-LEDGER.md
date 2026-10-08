@@ -65,6 +65,14 @@ counted — only observed payouts.
   guides (each guide now links the other 4 + home), sitemap 6 URLs, IndexNow 200 (6 URLs submitted), GSC property
   live → both new URLs inspected + "Indexing requested". Tests 103 green.
 
+- 2026-10-07 — **Free distribution round (post Google-quota)**: GitHub repo got 12
+  discoverability topics (snapchat, snapchat-memories, data-export, exif, …);
+  **Bing Webmaster Tools** account created via Google sign-in, site + sitemap
+  IMPORTED from Search Console (no verification needed); all 6 URLs submitted
+  to Bing directly (their quota: 100/day, not 2); free Site Scan audit queued
+  (`snapkeep-audit-1`, 50 pages, report emailed). Bing feeds Bing + DuckDuckGo
+  + Yahoo — so the site is now in all four Western engines' queues.
+
 ## Payouts (observed only)
 
 | Date | Rail | Amount | Reels earned |
