@@ -43,6 +43,21 @@ counted — only observed payouts.
   AdSense dashboard and passes site review (human/agent-with-login step).
   Godot-exported games (breakrun, friday-evacuation, printshop-sim) skipped
   this pass — loader needs an export-template patch + rebuild.
+- 2026-10-07 — **Dashboard tail finished (11/11 sites submitted)**: the
+  add-site throttle lifted; vindica, avolab.ca, aetherhands, fingerjam,
+  handstrument-two, infinite-side-scroller (Dashverse) and nomorejetlag
+  (ZenithShift) all added → ownership-verified via ads.txt → review
+  requested. vindica flipped to "Getting ready" within minutes; signflow and
+  outfitweather ads.txt status flipped to "Authorized" overnight.
+- 2026-10-07 — **Auto ads confirmed ON for snapkeeper** (Ads → By site);
+  other 11 sites show OFF — irrelevant until each passes review; flip
+  per-site after approval (one click each).
+- 2026-10-07 — **Google Search Console wired**: property
+  `https://snapkeeper.vercel.app/` created and VERIFIED instantly (the
+  `google634507300b6f677a.html` file shipped 2026-10-06 passed first try —
+  reached via the `?resource_id=` deep link after the add-property dialog
+  kept dying), and `sitemap.xml` submitted ("Sitemap submitted
+  successfully"; first fetch pending).
 
 ## Payouts (observed only)
 
