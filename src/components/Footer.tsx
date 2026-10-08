@@ -27,6 +27,12 @@ export function Footer() {
           <a href="/guide/snapchat-my-data-explained/" className="hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
             My Data export, explained
           </a>
+          <a href="/guide/transfer-snapchat-memories-to-new-phone/" className="hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
+            Transfer to a new phone
+          </a>
+          <a href="/guide/recover-deleted-snapchat-memories/" className="hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
+            Recover deleted Memories
+          </a>
         </nav>
         <p className="text-xs">
           Not affiliated with Snap Inc. Snapchat is a trademark of Snap Inc.

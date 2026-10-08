@@ -31,6 +31,8 @@ const urls = [
   `${BASE}/guide/how-to-export-snapchat-memories/`,
   `${BASE}/guide/back-up-memories-before-deleting-snapchat/`,
   `${BASE}/guide/snapchat-my-data-explained/`,
+  `${BASE}/guide/transfer-snapchat-memories-to-new-phone/`,
+  `${BASE}/guide/recover-deleted-snapchat-memories/`,
 ]
 
 const res = await fetch('https://api.indexnow.org/IndexNow', {

@@ -15,7 +15,9 @@ const GUIDE_DIRS = readdirSync(new URL('guide/', rootDir)).sort()
 const KNOWN_GUIDE_SLUGS = [
   'back-up-memories-before-deleting-snapchat',
   'how-to-export-snapchat-memories',
+  'recover-deleted-snapchat-memories',
   'snapchat-my-data-explained',
+  'transfer-snapchat-memories-to-new-phone',
 ]
 
 const guideHtml = (slug: string) => read(`guide/${slug}/index.html`)

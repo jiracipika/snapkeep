@@ -25,6 +25,12 @@ export default defineConfig({
         guideMyData: fileURLToPath(
           new URL('./guide/snapchat-my-data-explained/index.html', import.meta.url),
         ),
+        guideTransfer: fileURLToPath(
+          new URL('./guide/transfer-snapchat-memories-to-new-phone/index.html', import.meta.url),
+        ),
+        guideRecovery: fileURLToPath(
+          new URL('./guide/recover-deleted-snapchat-memories/index.html', import.meta.url),
+        ),
       },
     },
   },
