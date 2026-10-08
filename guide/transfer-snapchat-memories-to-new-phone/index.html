@@ -35,53 +35,95 @@
 
     <script type="application/ld+json">
       {
-        "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Snapkeep", "item": "https://snapkeeper.vercel.app/" },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Transfer Snapchat Memories to a new phone",
-                "item": "https://snapkeeper.vercel.app/guide/transfer-snapchat-memories-to-new-phone/"
-              }
-            ]
-          },
-          {
-            "@type": "HowTo",
-            "name": "How to transfer Snapchat Memories to a new phone",
-            "description": "Log in on the new phone to bring Memories with your account, then turn a My Data export into gallery-ready files so they live on the phone itself.",
-            "totalTime": "P0Y0M0DT1H0M0S",
-            "step": [
-              {
-                "@type": "HowToStep",
-                "position": 1,
-                "name": "Log in on the new phone",
-                "text": "Sign in to Snapchat on the new phone. Memories are stored with your account, so they appear there automatically — but only inside Snapchat."
-              },
-              {
-                "@type": "HowToStep",
-                "position": 2,
-                "name": "Request your data export",
-                "text": "At accounts.snapchat.com, open My Data and request an export with Memories included. Snapchat emails a download link when the ZIP is ready."
-              },
-              {
-                "@type": "HowToStep",
-                "position": 3,
-                "name": "Convert the export into gallery files",
-                "text": "Open the ZIP in Snapkeep to turn it into clean, dated photos and videos — processed in your browser, nothing uploaded."
-              },
-              {
-                "@type": "HowToStep",
-                "position": 4,
-                "name": "Copy the files onto the new phone",
-                "text": "Move the converted files to the new phone (cable, cloud drive, or AirDrop/Quick Share). They sort by capture date in Google Photos or Apple Photos."
-              }
-            ]
-          }
-        ]
+              "@context": "https://schema.org",
+              "@graph": [
+                      {
+                              "@type": "BreadcrumbList",
+                              "itemListElement": [
+                                      {
+                                              "@type": "ListItem",
+                                              "position": 1,
+                                              "name": "Snapkeep",
+                                              "item": "https://snapkeeper.vercel.app/"
+                                      },
+                                      {
+                                              "@type": "ListItem",
+                                              "position": 2,
+                                              "name": "Transfer Snapchat Memories to a new phone",
+                                              "item": "https://snapkeeper.vercel.app/guide/transfer-snapchat-memories-to-new-phone/"
+                                      }
+                              ]
+                      },
+                      {
+                              "@type": "HowTo",
+                              "name": "How to transfer Snapchat Memories to a new phone",
+                              "description": "Log in on the new phone to bring Memories with your account, then turn a My Data export into gallery-ready files so they live on the phone itself.",
+                              "totalTime": "P0Y0M0DT1H0M0S",
+                              "step": [
+                                      {
+                                              "@type": "HowToStep",
+                                              "position": 1,
+                                              "name": "Log in on the new phone",
+                                              "text": "Sign in to Snapchat on the new phone. Memories are stored with your account, so they appear there automatically — but only inside Snapchat."
+                                      },
+                                      {
+                                              "@type": "HowToStep",
+                                              "position": 2,
+                                              "name": "Request your data export",
+                                              "text": "At accounts.snapchat.com, open My Data and request an export with Memories included. Snapchat emails a download link when the ZIP is ready."
+                                      },
+                                      {
+                                              "@type": "HowToStep",
+                                              "position": 3,
+                                              "name": "Convert the export into gallery files",
+                                              "text": "Open the ZIP in Snapkeep to turn it into clean, dated photos and videos — processed in your browser, nothing uploaded."
+                                      },
+                                      {
+                                              "@type": "HowToStep",
+                                              "position": 4,
+                                              "name": "Copy the files onto the new phone",
+                                              "text": "Move the converted files to the new phone (cable, cloud drive, or AirDrop/Quick Share). They sort by capture date in Google Photos or Apple Photos."
+                                      }
+                              ]
+                      },
+                      {
+                              "@type": "FAQPage",
+                              "mainEntity": [
+                                      {
+                                              "@type": "Question",
+                                              "name": "Do Snapchat Memories automatically transfer to a new phone?",
+                                              "acceptedAnswer": {
+                                                      "@type": "Answer",
+                                                      "text": "They follow your account — log in on the new phone and they appear inside Snapchat. What doesn't transfer is anything saved to the old phone's camera roll, and Memories never land in the new phone's gallery on their own."
+                                              }
+                                      },
+                                      {
+                                              "@type": "Question",
+                                              "name": "Can I transfer Memories without a computer?",
+                                              "acceptedAnswer": {
+                                                      "@type": "Answer",
+                                                      "text": "Yes. Snapkeep runs in the phone's browser, and the converted files can be saved straight to the device. For very large archives a computer is faster, but it isn't required."
+                                              }
+                                      },
+                                      {
+                                              "@type": "Question",
+                                              "name": "Will my Memories transfer if I have a new phone number?",
+                                              "acceptedAnswer": {
+                                                      "@type": "Answer",
+                                                      "text": "Memories are tied to the account, not the SIM. Log in with your username and password and they're there. Update your verified email and number in settings while you're at it."
+                                              }
+                                      },
+                                      {
+                                              "@type": "Question",
+                                              "name": "What about transferring to a new account?",
+                                              "acceptedAnswer": {
+                                                      "@type": "Answer",
+                                                      "text": "Snapchat has no Memories transfer between accounts. The practical route is to export from the old account, convert to files, and keep them in your gallery rather than inside the new account."
+                                              }
+                                      }
+                              ]
+                      }
+              ]
       }
     </script>
 
