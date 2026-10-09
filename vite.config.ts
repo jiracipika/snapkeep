@@ -34,6 +34,9 @@ export default defineConfig({
         guideRumor: fileURLToPath(
           new URL('./guide/is-snapchat-deleting-memories/index.html', import.meta.url),
         ),
+        guideComputer: fileURLToPath(
+          new URL('./guide/snapchat-memories-on-computer/index.html', import.meta.url),
+        ),
       },
     },
   },

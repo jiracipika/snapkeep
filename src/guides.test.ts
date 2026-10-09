@@ -17,6 +17,7 @@ const KNOWN_GUIDE_SLUGS = [
   'how-to-export-snapchat-memories',
   'is-snapchat-deleting-memories',
   'recover-deleted-snapchat-memories',
+  'snapchat-memories-on-computer',
   'snapchat-my-data-explained',
   'transfer-snapchat-memories-to-new-phone',
 ]
