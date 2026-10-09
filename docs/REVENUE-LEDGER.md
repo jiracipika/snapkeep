@@ -95,3 +95,33 @@ are the lever that compounds.
   cover discovery; retry the button tomorrow. Bing Site Scan report landed
   CLEAN (0 errors / 0 warnings; 1 page scanned) — re-scan blocked on monthly
   quota (0 pages left).
+- 2026-10-09 — **Roadmap guide #2 shipped + YouTube lane staged**:
+  `/guide/snapchat-memories-on-computer/` (b334be4, 109 tests green, LIVE
+  same-hour). Fact-checked first: Snapchat Web has NO Memories (app-only per
+  Snap's support docs) — the page honestly kills the "view in browser"
+  expectation and routes to the free export→convert path. Wired into
+  sitemap (lastmod 2026-10-09), IndexNow (8 URLs, 200 OK), app footer,
+  Keep-reading cross-links in all 6 sibling guides. Google request-indexing
+  retried once at quota reset — STILL "Quota Exceeded" (young-property pool
+  effectively empty; sitemap+IndexNow remain the discovery path; stop
+  burning turns on it until something material changes). YouTube: headed
+  Chrome staged at the Google sign-in page (fresh profile,
+  /Volumes/ADATA/agent-browser/youtube-profile, CDP :9333, driver
+  cdp.mjs) — one manual sign-in as rajingajadhar@gmail.com unlocks
+  automated channel-create + upload of BOTH shorts; agent never touches
+  the password. Short #2 (memories-on-computer) rendered for the same
+  cluster.
+- 2026-10-09 (later) — **YOUTUBE LANE LIVE — first two videos published**: user chose
+  the existing **BlazianSaucee** channel (@blaziansaucee509, UCRpqV2E4enCLdXgBFYfOa_w)
+  over creating a new Snapkeep channel (skips the phone-verification wall). Both
+  shorts published PUBLIC via CDP (headed-Chrome real input events; Studio ignores
+  untrusted JS clicks on radios/publish — `Input.dispatchMouseEvent` is the hammer):
+  1. https://youtube.com/shorts/7OxB3TkyabE — 5GB cap short →
+     guide /guide/is-snapchat-deleting-memories/
+  2. https://youtube.com/shorts/isy60pYE3jI — memories-on-computer short →
+     guide /guide/snapchat-memories-on-computer/
+  Titles/descriptions/hashtags per the NOTES §4 packages; channel-authored
+  comments with guide links posted on both. **Pinning + new-channel creation both
+  gated behind YouTube's one-time "advanced features" phone verification —
+  user-gated.** Watch: first impressions/CTR in Studio within 48h; the funnel is
+  short → pinned link → guide → tool. Scoreboard unchanged: $0.00 / 0 reels.
