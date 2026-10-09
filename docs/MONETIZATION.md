@@ -65,11 +65,14 @@ Seed "snapchat memories": 527 impressions / 3mo on Bing (US 232, UK 60, CA 30,
 IN 25) — Bing ≈ ¼ of Google volume, so ~2k/3mo Google-equivalent. Related
 keywords worth a page, in priority order:
 
-1. **"when is snapchat deleting memories" (255) + "when will snapchat delete
-   memories" (76)** — recurring rumor-panic (a competitor blog fed the Sept
-   2026 wave). Write a calm, dated "Is Snapchat deleting Memories?" explainer:
-   no, Memories last until you delete them or the account goes; where the
-   rumor comes from; how to make yourself immune (export + backup). Top pick.
+1. **DONE 2026-10-08** — `/guide/is-snapchat-deleting-memories/` (commit 27b7113).
+   Fact-check changed the angle: the rumor has a real core — Snap announced a
+   **5GB free Memories storage cap** (newsroom.snap.com/snap-memory-storage,
+   Sept 26 2025) with a 12-month grace period that ended ~late Sept 2026, so
+   over-cap content on free accounts is deletable now. Page gives the honest
+   answer (partly true, who's affected, free export path), Article + FAQPage
+   JSON-LD, cross-linked from all 5 sibling guides. Original "no rumor"
+   framing would have been factually wrong. Remaining:
 2. **"snapchat memories on computer" (51)** — viewing Memories on the web
    (limitations) vs. getting them ONTO the computer via a data export.
 3. Skipped as navigational/clickbait: "snapchat login" (1M), "snap web"

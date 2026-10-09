@@ -85,3 +85,13 @@ Utility-tool display RPMs run roughly $0.5–$5 per 1,000 pageviews; donations
 convert at well under 1%. First dollar ≈ a few hundred visits with ads live —
 or a single generous coffee drinker. Traffic is the bottleneck; content pages
 are the lever that compounds.
+- 2026-10-08 — **Roadmap guide #1 shipped**: `/guide/is-snapchat-deleting-memories/`
+  (27b7113, 106 tests green). Fact-checked against Snap's announcement — the
+  rumor is PARTLY true (5GB free cap announced Sept 2025; 12-month grace ended
+  ~late Sept 2026, over-cap free content deletable now), and the page says so
+  honestly with a free-export CTA. Wired everywhere (sitemap, IndexNow,
+  footer, cross-links, FAQPage JSON-LD). Bing: URL submitted (quota 100/day).
+  Google: request-indexing STILL quota-blocked today — sitemap + IndexNow
+  cover discovery; retry the button tomorrow. Bing Site Scan report landed
+  CLEAN (0 errors / 0 warnings; 1 page scanned) — re-scan blocked on monthly
+  quota (0 pages left).
