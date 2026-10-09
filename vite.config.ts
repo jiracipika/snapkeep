@@ -31,6 +31,9 @@ export default defineConfig({
         guideRecovery: fileURLToPath(
           new URL('./guide/recover-deleted-snapchat-memories/index.html', import.meta.url),
         ),
+        guideRumor: fileURLToPath(
+          new URL('./guide/is-snapchat-deleting-memories/index.html', import.meta.url),
+        ),
       },
     },
   },

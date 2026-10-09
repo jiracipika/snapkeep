@@ -33,6 +33,7 @@ const urls = [
   `${BASE}/guide/snapchat-my-data-explained/`,
   `${BASE}/guide/transfer-snapchat-memories-to-new-phone/`,
   `${BASE}/guide/recover-deleted-snapchat-memories/`,
+  `${BASE}/guide/is-snapchat-deleting-memories/`,
 ]
 
 const res = await fetch('https://api.indexnow.org/IndexNow', {

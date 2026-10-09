@@ -24,6 +24,9 @@ export function Footer() {
           <a href="/guide/back-up-memories-before-deleting-snapchat/" className="hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
             Back up before deleting
           </a>
+          <a href="/guide/is-snapchat-deleting-memories/" className="hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
+            Deleting Memories?
+          </a>
           <a href="/guide/snapchat-my-data-explained/" className="hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
             My Data export, explained
           </a>
