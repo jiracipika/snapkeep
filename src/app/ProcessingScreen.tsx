@@ -1,4 +1,7 @@
+import { motion } from 'motion/react'
 import { AlertIcon } from '@/components/icons'
+import { spring } from '@/components/motionPresets'
+import { LiftButton } from '@/components/motionUI'
 
 const STAGES = [
   { id: 'opening', label: 'Opening Snapchat archive' },
@@ -22,7 +25,13 @@ export function ProcessingScreen({
   const stageIndex = STAGES.findIndex((s) => s.id === stage)
   return (
     <main id="main" className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center px-6 py-16">
-      <div className="card p-8">
+      {/* Progress surface springs in when the scan screen mounts. */}
+      <motion.div
+        className="card p-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={spring}
+      >
         {error ? (
           <div className="text-center">
             <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/40">
@@ -30,9 +39,9 @@ export function ProcessingScreen({
             </span>
             <h1 className="mt-4 text-xl font-bold">We couldn’t read that archive</h1>
             <p className="mt-2 text-sm leading-relaxed text-ink-500 dark:text-ink-400">{error}</p>
-            <button type="button" className="btn-primary mt-6" onClick={onCancel}>
+            <LiftButton type="button" className="btn-primary mt-6" onClick={onCancel}>
               Try another file
-            </button>
+            </LiftButton>
           </div>
         ) : (
           <>
@@ -87,12 +96,12 @@ export function ProcessingScreen({
                 style={{ width: `${Math.max(5, ((stageIndex + 1) / STAGES.length) * 100)}%` }}
               />
             </div>
-            <button type="button" className="btn-ghost mx-auto mt-6 block" onClick={onCancel}>
+            <LiftButton type="button" className="btn-ghost mx-auto mt-6 block" onClick={onCancel}>
               Cancel
-            </button>
+            </LiftButton>
           </>
         )}
-      </div>
+      </motion.div>
     </main>
   )
 }

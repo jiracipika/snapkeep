@@ -1,4 +1,5 @@
 import { donateLink, tipLink } from '@/lib/monetization'
+import { LiftLink } from './motionUI'
 import { CardIcon, GithubIcon, GhostLogo, HeartIcon } from './icons'
 import { ThemeToggle } from './ThemeToggle'
 
@@ -20,7 +21,7 @@ export function Header({
         </a>
         <div className="flex items-center gap-1">
           {donate && (
-            <a
+            <LiftLink
               href={donate}
               target="_blank"
               rel="noopener noreferrer"
@@ -29,10 +30,10 @@ export function Header({
             >
               <HeartIcon className="h-4 w-4" />
               <span className="hidden sm:inline">Donate</span>
-            </a>
+            </LiftLink>
           )}
           {tip && (
-            <a
+            <LiftLink
               href={tip}
               target="_blank"
               rel="noopener noreferrer"
@@ -41,9 +42,9 @@ export function Header({
             >
               <CardIcon className="h-4 w-4" />
               <span className="hidden sm:inline">Tip</span>
-            </a>
+            </LiftLink>
           )}
-          <a
+          <LiftLink
             href="https://github.com/jiracipika/snapkeep"
             target="_blank"
             rel="noopener noreferrer"
@@ -51,7 +52,7 @@ export function Header({
             aria-label="View source on GitHub"
           >
             <GithubIcon className="h-5 w-5" />
-          </a>
+          </LiftLink>
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         </div>
       </div>

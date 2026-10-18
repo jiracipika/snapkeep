@@ -1,3 +1,4 @@
+import { motion } from 'motion/react'
 import { useZipExport } from '@/app/useZipExport'
 import type { ArchiveSession } from '@/lib/snapchat/session'
 import { buildPlan, DEFAULT_PLAN_OPTIONS } from '@/lib/snapchat/plan'
@@ -5,6 +6,8 @@ import { formatHumanDate } from '@/lib/snapchat/datetime'
 import { buildExportReport } from '@/lib/export/report'
 import { formatBytes, formatCount } from '@/lib/format'
 import { AlertIcon, LockIcon, PhotoIcon, SparkIcon, VideoIcon } from '@/components/icons'
+import { spring } from '@/components/motionPresets'
+import { LiftButton } from '@/components/motionUI'
 
 const LARGE_EXPORT_BYTES = 1.5 * 1024 ** 3
 
@@ -38,7 +41,12 @@ export function ResultScreen({
   if (isEmpty) {
     return (
       <main id="main" className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center px-6 py-16">
-        <div className="card p-8 text-center">
+        <motion.div
+          className="card p-8 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={spring}
+        >
           <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900/40">
             <SparkIcon className="h-7 w-7 text-brand-700 dark:text-brand-300" />
           </span>
@@ -50,14 +58,14 @@ export function ResultScreen({
             inspector can tell you what’s inside.
           </p>
           <div className="mt-6 flex justify-center gap-3">
-            <button type="button" className="btn-secondary" onClick={onAdvanced}>
+            <LiftButton type="button" className="btn-secondary" onClick={onAdvanced}>
               Inspect archive
-            </button>
-            <button type="button" className="btn-ghost" onClick={onRestart}>
+            </LiftButton>
+            <LiftButton type="button" className="btn-ghost" onClick={onRestart}>
               Start over
-            </button>
+            </LiftButton>
           </div>
-        </div>
+        </motion.div>
       </main>
     )
   }
@@ -69,7 +77,13 @@ export function ResultScreen({
 
   return (
     <main id="main" className="mx-auto w-full max-w-2xl flex-1 px-6 py-12 sm:py-16">
-      <div className="card overflow-hidden">
+      {/* Results panel springs in when the scan completes. */}
+      <motion.div
+        className="card overflow-hidden"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={spring}
+      >
         <div className="bg-gradient-to-b from-brand-50 to-transparent px-8 pb-6 pt-10 text-center dark:from-brand-900/15">
           <h1 className="text-3xl font-bold tracking-tight">Your Memories are ready</h1>
           {isLinkOnly ? (
@@ -192,20 +206,20 @@ export function ResultScreen({
                     <> — {formatCount(ex.failureCount)} files couldn’t be packed (see the report inside)</>
                   )}
                 </p>
-                <button type="button" className="btn-secondary mt-4" onClick={download}>
+                <LiftButton type="button" className="btn-secondary mt-4" onClick={download}>
                   Download again
-                </button>
+                </LiftButton>
               </div>
             ) : (
               <>
-                <button
+                <LiftButton
                   type="button"
                   className="btn-primary mx-auto flex w-full max-w-sm px-6 py-4 text-base"
                   onClick={download}
                   disabled={stats.total === 0}
                 >
                   Download My Memories
-                </button>
+                </LiftButton>
                 {ex.warning && (
                   <p className="mx-auto mt-3 max-w-sm text-center text-xs text-amber-600 dark:text-amber-400">
                     {ex.warning}
@@ -216,9 +230,9 @@ export function ResultScreen({
           </div>
 
           <div className="mt-4 flex flex-col items-center gap-2">
-            <button type="button" className="btn-ghost text-sm" onClick={onAdvanced}>
+            <LiftButton type="button" className="btn-ghost text-sm" onClick={onAdvanced}>
               Review in Advanced Mode
-            </button>
+            </LiftButton>
             <p className="flex items-center gap-1.5 text-xs text-ink-400 dark:text-ink-500">
               <LockIcon className="h-3.5 w-3.5" />
               Your archive never left this device
@@ -228,12 +242,12 @@ export function ResultScreen({
               Photos and Apple Photos sort them correctly.
             </p>
           </div>
-        </div>
-      </div>
+          </div>
+        </motion.div>
 
-      <button type="button" className="btn-ghost mx-auto mt-6 block text-sm" onClick={onRestart}>
+      <LiftButton type="button" className="btn-ghost mx-auto mt-6 block text-sm" onClick={onRestart}>
         Process another archive
-      </button>
+      </LiftButton>
     </main>
   )
 }

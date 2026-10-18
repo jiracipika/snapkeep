@@ -1,5 +1,7 @@
+import { motion } from 'motion/react'
 import { DropZone } from '@/components/DropZone'
 import { LockIcon } from '@/components/icons'
+import { gestureSpring, spring } from '@/components/motionPresets'
 import { ModeSelector, type Mode } from '@/components/ModeSelector'
 import { FAQS } from '@/config/seo'
 
@@ -18,6 +20,30 @@ const STEPS = [
   },
 ]
 
+// Hero entrance: staggered spring rise-and-fade. Variants propagate to the
+// motion children below; MotionConfig handles prefers-reduced-motion.
+const heroGroup = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+}
+const chipGroup = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.05 } },
+}
+const heroItem = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: spring },
+}
+
+// Scroll reveal for feature/step blocks: fade-up once, then a gentle hover lift.
+const reveal = (delay = 0) => ({
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0, transition: { ...spring, delay } },
+  viewport: { once: true },
+  whileHover: { y: -4 },
+  transition: gestureSpring,
+})
+
 export function Landing({
   mode,
   onModeChange,
@@ -35,30 +61,46 @@ export function Landing({
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-80 max-w-2xl bg-[radial-gradient(ellipse_at_top,rgba(242,213,0,0.18),transparent_65%)] blur-2xl"
       />
 
-      <section className="text-center">
-        <h1 className="text-balance text-4xl font-bold tracking-tight sm:text-5xl">
+      <motion.section variants={heroGroup} initial="hidden" animate="show" className="text-center">
+        <motion.h1
+          variants={heroItem}
+          className="text-balance text-4xl font-bold tracking-tight sm:text-5xl"
+        >
           Export your{' '}
           <span className="bg-gradient-to-r from-brand-600 to-brand-400 bg-clip-text text-transparent dark:from-brand-300 dark:to-brand-500">
             Snapchat Memories
           </span>
-        </h1>
-        <p className="mx-auto mt-4 max-w-xl text-pretty text-lg text-ink-500 dark:text-ink-400">
+        </motion.h1>
+        <motion.p
+          variants={heroItem}
+          className="mx-auto mt-4 max-w-xl text-pretty text-lg text-ink-500 dark:text-ink-400"
+        >
           Turn your Snapchat data export into normal photos and videos you can
           actually keep.
-        </p>
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+        </motion.p>
+        <motion.div
+          variants={chipGroup}
+          className="mt-6 flex flex-wrap items-center justify-center gap-2"
+        >
           {['100% free', 'No sign-up', 'No uploads', 'Open source'].map((chip) => (
-            <span
+            <motion.span
               key={chip}
+              variants={heroItem}
               className="rounded-full border border-ink-200 bg-ink-50 px-3 py-1 text-xs font-medium text-ink-600 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-300"
             >
               {chip}
-            </span>
+            </motion.span>
           ))}
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
-      <section className="mt-10" aria-label="Upload your Snapchat export">
+      <motion.section
+        className="mt-10"
+        aria-label="Upload your Snapchat export"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ ...spring, delay: 0.35 }}
+      >
         <DropZone onFiles={onFiles} />
         <p className="mt-4 flex items-center justify-center gap-2 text-center text-sm text-ink-500 dark:text-ink-400">
           <LockIcon className="h-4 w-4 shrink-0 text-brand-600 dark:text-brand-400" />
@@ -69,14 +111,20 @@ export function Landing({
             Nothing is uploaded.
           </span>
         </p>
-      </section>
+      </motion.section>
 
-      <section className="mt-12">
+      <motion.section
+        className="mt-12"
+        aria-label="Choose a mode"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ ...spring, delay: 0.45 }}
+      >
         <h2 className="sr-only">Choose a mode</h2>
         <div className="flex justify-center">
           <ModeSelector mode={mode} onChange={onModeChange} />
         </div>
-      </section>
+      </motion.section>
 
       <section className="mt-16" aria-label="How it works">
         <h2 className="text-center text-sm font-semibold uppercase tracking-widest text-ink-400 dark:text-ink-500">
@@ -84,7 +132,7 @@ export function Landing({
         </h2>
         <ol className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
           {STEPS.map((step, i) => (
-            <li key={step.title} className="card p-5">
+            <motion.li key={step.title} className="card p-5" {...reveal(i * 0.08)}>
               <span
                 aria-hidden
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-800 dark:bg-brand-900/40 dark:text-brand-300"
@@ -95,12 +143,19 @@ export function Landing({
               <p className="mt-1 text-sm leading-relaxed text-ink-500 dark:text-ink-400">
                 {step.body}
               </p>
-            </li>
+            </motion.li>
           ))}
         </ol>
       </section>
 
-      <section className="mt-16 max-w-2xl text-center" aria-label="What is Snapkeep">
+      <motion.section
+        className="mt-16 max-w-2xl text-center"
+        aria-label="What is Snapkeep"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={spring}
+      >
         <h2 className="text-sm font-semibold uppercase tracking-widest text-ink-400 dark:text-ink-500">
           What is Snapkeep?
         </h2>
@@ -111,7 +166,7 @@ export function Landing({
           Photos. Everything runs locally in your browser: no uploads, no sign-up,
           no watermarks, and your original archive is never modified.
         </p>
-      </section>
+      </motion.section>
 
       <section className="mt-16" aria-label="Frequently asked questions">
         <h2 className="text-center text-sm font-semibold uppercase tracking-widest text-ink-400 dark:text-ink-500">
@@ -119,10 +174,10 @@ export function Landing({
         </h2>
         <div className="mx-auto mt-6 grid max-w-2xl gap-4">
           {FAQS.map((faq) => (
-            <div key={faq.q} className="card p-5">
+            <motion.div key={faq.q} className="card p-5" {...reveal()}>
               <h3 className="font-semibold">{faq.q}</h3>
               <p className="mt-1 text-sm leading-relaxed text-ink-500 dark:text-ink-400">{faq.a}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>

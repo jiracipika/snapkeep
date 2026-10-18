@@ -1,3 +1,5 @@
+import { LiftButton } from './motionUI'
+
 export type Mode = 'easy' | 'advanced'
 
 const MODES: { id: Mode; title: string; blurb: string }[] = [
@@ -29,7 +31,7 @@ export function ModeSelector({
       {MODES.map((m) => {
         const selected = mode === m.id
         return (
-          <button
+          <LiftButton
             key={m.id}
             type="button"
             role="radio"
@@ -55,7 +57,7 @@ export function ModeSelector({
                 {m.blurb}
               </span>
             </span>
-          </button>
+          </LiftButton>
         )
       })}
     </div>
