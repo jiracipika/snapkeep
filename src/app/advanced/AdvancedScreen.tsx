@@ -149,14 +149,21 @@ export function AdvancedScreen({
         </p>
       )}
 
-      <nav className="mb-6 flex gap-1 overflow-x-auto rounded-2xl bg-ink-100/70 p-1 dark:bg-ink-900" aria-label="Advanced sections">
+      <nav
+        className="mb-6 flex gap-1 overflow-x-auto rounded-2xl bg-ink-100/70 p-1 dark:bg-ink-900"
+        aria-label="Advanced sections"
+        style={{
+          scrollbarWidth: 'none',
+          maskImage: 'linear-gradient(to right, black 0, black calc(100% - 24px), transparent)',
+        }}
+      >
         {TABS.map((t) => (
           <button
             key={t.id}
             type="button"
             onClick={() => setTab(t.id)}
-            aria-current={tab === t.id}
-            className={`shrink-0 cursor-pointer rounded-xl px-4 py-2 text-sm font-medium transition-colors ${
+            aria-current={tab === t.id ? 'true' : undefined}
+            className={`shrink-0 cursor-pointer rounded-xl px-4 py-2.5 text-sm font-medium transition-colors ${
               tab === t.id
                 ? 'bg-white shadow-card dark:bg-ink-800'
                 : 'text-ink-500 hover:text-ink-700 dark:hover:text-ink-300'

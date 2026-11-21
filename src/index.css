@@ -34,6 +34,15 @@
 
   --shadow-card: 0 1px 2px rgb(15 23 42 / 0.06), 0 8px 24px rgb(15 23 42 / 0.07);
   --shadow-lift: 0 2px 4px rgb(15 23 42 / 0.08), 0 16px 40px rgb(15 23 42 / 0.12);
+
+  --animate-dash-march: dash-march 0.9s linear infinite;
+}
+
+/* Marching dashes for the drop-zone drag-over frame. */
+@keyframes dash-march {
+  to {
+    stroke-dashoffset: -18;
+  }
 }
 
 @layer base {
@@ -60,6 +69,33 @@
   }
   ::selection {
     @apply bg-brand-200 text-ink-900;
+  }
+  caret-color: var(--color-brand-600);
+
+  /* Themed scrollbars: the parts of the page the browser draws by default
+     should still speak the design's palette. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-ink-300) transparent;
+  }
+  .dark * {
+    scrollbar-color: var(--color-ink-700) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-ink-300);
+    border-radius: 9999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    background-color: var(--color-ink-700);
   }
 }
 

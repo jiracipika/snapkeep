@@ -17,26 +17,26 @@ export function Footer() {
             device.
           </p>
         )}
-        <nav aria-label="Guides" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs">
-          <a href="/guide/how-to-export-snapchat-memories/" className="hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
+        <nav aria-label="Guides" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs">
+          <a href="/guide/how-to-export-snapchat-memories/" className="py-1 hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
             How to export Snapchat Memories
           </a>
-          <a href="/guide/back-up-memories-before-deleting-snapchat/" className="hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
+          <a href="/guide/back-up-memories-before-deleting-snapchat/" className="py-1 hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
             Back up before deleting
           </a>
-          <a href="/guide/is-snapchat-deleting-memories/" className="hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
+          <a href="/guide/is-snapchat-deleting-memories/" className="py-1 hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
             Deleting Memories?
           </a>
-          <a href="/guide/snapchat-memories-on-computer/" className="hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
+          <a href="/guide/snapchat-memories-on-computer/" className="py-1 hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
             Memories on a computer
           </a>
-          <a href="/guide/snapchat-my-data-explained/" className="hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
+          <a href="/guide/snapchat-my-data-explained/" className="py-1 hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
             My Data export, explained
           </a>
-          <a href="/guide/transfer-snapchat-memories-to-new-phone/" className="hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
+          <a href="/guide/transfer-snapchat-memories-to-new-phone/" className="py-1 hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
             Transfer to a new phone
           </a>
-          <a href="/guide/recover-deleted-snapchat-memories/" className="hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
+          <a href="/guide/recover-deleted-snapchat-memories/" className="py-1 hover:text-ink-600 hover:underline underline-offset-2 dark:hover:text-ink-300">
             Recover deleted Memories
           </a>
         </nav>

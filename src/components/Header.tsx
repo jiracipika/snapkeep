@@ -25,7 +25,7 @@ export function Header({
               href={donate}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary !rounded-full !px-4 !py-2 text-sm"
+              className="btn-primary !min-h-11 !rounded-full !px-4 !py-2 text-sm"
               aria-label="Donate via PayPal"
             >
               <HeartIcon className="h-4 w-4" />
@@ -37,7 +37,7 @@ export function Header({
               href={tip}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-secondary !rounded-full !px-4 !py-2 text-sm"
+              className="btn-secondary !min-h-11 !rounded-full !px-4 !py-2 text-sm"
               aria-label="Tip with a card via Stripe"
             >
               <CardIcon className="h-4 w-4" />
@@ -48,7 +48,7 @@ export function Header({
             href="https://github.com/jiracipika/snapkeep"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-ghost !rounded-full !p-2.5"
+            className="btn-ghost !rounded-full !p-3"
             aria-label="View source on GitHub"
           >
             <GithubIcon className="h-5 w-5" />

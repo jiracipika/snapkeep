@@ -67,7 +67,7 @@ export function Landing({
           className="text-balance text-4xl font-bold tracking-tight sm:text-5xl"
         >
           Export your{' '}
-          <span className="bg-gradient-to-r from-brand-600 to-brand-400 bg-clip-text text-transparent dark:from-brand-300 dark:to-brand-500">
+          <span className="text-brand-700 decoration-brand-300/70 decoration-8 underline-offset-8 underline dark:text-brand-300 dark:decoration-brand-500/40">
             Snapchat Memories
           </span>
         </motion.h1>
@@ -127,9 +127,7 @@ export function Landing({
       </motion.section>
 
       <section className="mt-16" aria-label="How it works">
-        <h2 className="text-center text-sm font-semibold uppercase tracking-widest text-ink-400 dark:text-ink-500">
-          How it works
-        </h2>
+        <h2 className="text-center text-2xl font-bold tracking-tight">How it works</h2>
         <ol className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
           {STEPS.map((step, i) => (
             <motion.li key={step.title} className="card p-5" {...reveal(i * 0.08)}>
@@ -156,9 +154,7 @@ export function Landing({
         viewport={{ once: true }}
         transition={spring}
       >
-        <h2 className="text-sm font-semibold uppercase tracking-widest text-ink-400 dark:text-ink-500">
-          What is Snapkeep?
-        </h2>
+        <h2 className="text-2xl font-bold tracking-tight">What is Snapkeep?</h2>
         <p className="mt-4 text-pretty leading-relaxed text-ink-500 dark:text-ink-400">
           Snapkeep is a free online tool that opens the ZIP Snapchat sends when you
           request your data (the &ldquo;My Data&rdquo; export) and turns it into normal, dated
@@ -169,7 +165,7 @@ export function Landing({
       </motion.section>
 
       <section className="mt-16" aria-label="Frequently asked questions">
-        <h2 className="text-center text-sm font-semibold uppercase tracking-widest text-ink-400 dark:text-ink-500">
+        <h2 className="text-center text-2xl font-bold tracking-tight">
           Frequently asked questions
         </h2>
         <div className="mx-auto mt-6 grid max-w-2xl gap-4">

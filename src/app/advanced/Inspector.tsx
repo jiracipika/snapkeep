@@ -1,6 +1,7 @@
 import type { MediaItem } from '@/lib/snapchat/types'
 import { formatBytes } from '@/lib/format'
 import { formatDateParts } from '@/lib/snapchat/datetime'
+import { XIcon } from '@/components/icons'
 
 const SOURCE_LABEL: Record<string, string> = {
   metadata: 'Snapchat metadata',
@@ -32,8 +33,13 @@ export function Inspector({
     >
       <div className="mb-4 flex items-start justify-between gap-3">
         <h3 className="break-all font-semibold">{item.originalFilename}</h3>
-        <button type="button" className="btn-ghost !p-1.5 !rounded-lg" onClick={onClose} aria-label="Close inspector">
-          ✕
+        <button
+          type="button"
+          className="btn-ghost !rounded-lg !p-2"
+          onClick={onClose}
+          aria-label="Close inspector"
+        >
+          <XIcon className="h-4 w-4" />
         </button>
       </div>
 
@@ -83,7 +89,7 @@ export function Inspector({
         </Row>
         <Row label="Download URL">
           {item.downloadUrl ? (
-            <span className="text-xs text-ink-400">
+            <span className="text-xs text-ink-500 dark:text-ink-400">
               present in export (expires; not shown for privacy)
             </span>
           ) : (
@@ -98,7 +104,7 @@ export function Inspector({
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <dt className="text-xs uppercase tracking-wide text-ink-400">{label}</dt>
+      <dt className="text-xs uppercase tracking-wide text-ink-500 dark:text-ink-400">{label}</dt>
       <dd className="mt-0.5">{children}</dd>
     </div>
   )

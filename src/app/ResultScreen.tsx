@@ -5,7 +5,7 @@ import { buildPlan, DEFAULT_PLAN_OPTIONS } from '@/lib/snapchat/plan'
 import { formatHumanDate } from '@/lib/snapchat/datetime'
 import { buildExportReport } from '@/lib/export/report'
 import { formatBytes, formatCount } from '@/lib/format'
-import { AlertIcon, LockIcon, PhotoIcon, SparkIcon, VideoIcon } from '@/components/icons'
+import { AlertIcon, CheckIcon, LockIcon, PhotoIcon, SparkIcon, VideoIcon } from '@/components/icons'
 import { spring } from '@/components/motionPresets'
 import { LiftButton } from '@/components/motionUI'
 
@@ -77,7 +77,7 @@ export function ResultScreen({
 
   return (
     <main id="main" className="mx-auto w-full max-w-2xl flex-1 px-6 py-12 sm:py-16">
-      {/* Results panel springs in when the scan completes. */}
+      {/* Results panel springs in when the scan completes; stat blocks stagger. */}
       <motion.div
         className="card overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
@@ -85,60 +85,93 @@ export function ResultScreen({
         transition={spring}
       >
         <div className="bg-gradient-to-b from-brand-50 to-transparent px-8 pb-6 pt-10 text-center dark:from-brand-900/15">
-          <h1 className="text-3xl font-bold tracking-tight">Your Memories are ready</h1>
+          <motion.h1
+            className="text-3xl font-bold tracking-tight"
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...spring, delay: 0.1 }}
+          >
+            Your Memories are ready
+          </motion.h1>
           {isLinkOnly ? (
             <p className="mt-2 text-ink-500 dark:text-ink-400">
               {formatCount(metadataCount)} Memories found as download links
             </p>
           ) : (
-            <p className="mt-3 text-5xl font-extrabold tracking-tight text-brand-700 dark:text-brand-300">
+            <motion.p
+              className="mt-3 text-5xl font-extrabold tabular-nums tracking-tight text-brand-700 dark:text-brand-300"
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ ...spring, delay: 0.18 }}
+            >
               {formatCount(stats.total)}
-            </p>
+            </motion.p>
           )}
           {!isLinkOnly && (
             <p className="mt-1 font-medium text-ink-500 dark:text-ink-400">Memories found</p>
           )}
         </div>
 
-        <div className="px-8 pb-8">
+        <motion.div
+          className="px-8 pb-8"
+          initial="hidden"
+          animate="show"
+          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06, delayChildren: 0.25 } } }}
+        >
           {!isLinkOnly && (
-            <div className="mx-auto grid max-w-sm grid-cols-2 gap-3">
+            <motion.div
+              className="mx-auto grid max-w-sm grid-cols-2 gap-3"
+              variants={{ hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0, transition: spring } }}
+            >
               <div className="rounded-2xl bg-ink-50 p-4 text-center dark:bg-ink-800/60">
-                <PhotoIcon className="mx-auto h-5 w-5 text-ink-400" />
-                <p className="mt-1 text-2xl font-bold">{formatCount(stats.photos)}</p>
+                <PhotoIcon className="mx-auto h-5 w-5 text-ink-500 dark:text-ink-400" />
+                <p className="mt-1 text-2xl font-bold tabular-nums">{formatCount(stats.photos)}</p>
                 <p className="text-sm text-ink-500 dark:text-ink-400">Photos</p>
               </div>
               <div className="rounded-2xl bg-ink-50 p-4 text-center dark:bg-ink-800/60">
-                <VideoIcon className="mx-auto h-5 w-5 text-ink-400" />
-                <p className="mt-1 text-2xl font-bold">{formatCount(stats.videos)}</p>
+                <VideoIcon className="mx-auto h-5 w-5 text-ink-500 dark:text-ink-400" />
+                <p className="mt-1 text-2xl font-bold tabular-nums">{formatCount(stats.videos)}</p>
                 <p className="text-sm text-ink-500 dark:text-ink-400">Videos</p>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {stats.dateFrom !== null && stats.dateTo !== null && (
-            <div className="mx-auto mt-5 flex max-w-sm items-center justify-between rounded-2xl border border-ink-200/70 px-5 py-3 text-sm dark:border-ink-700">
-              <div>
-                <p className="text-xs uppercase tracking-wide text-ink-400">From</p>
-                <p className="font-semibold">{formatHumanDate(stats.dateFrom)}</p>
+            <motion.div
+              className="mx-auto mt-5 max-w-sm rounded-2xl border border-ink-200/70 px-5 py-3 text-sm dark:border-ink-700"
+              variants={{ hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0, transition: spring } }}
+            >
+              {/* Stacked on phones so long dates never wrap mid-value. */}
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-ink-500 dark:text-ink-400">
+                    From
+                  </p>
+                  <p className="font-semibold">{formatHumanDate(stats.dateFrom)}</p>
+                </div>
+                <div aria-hidden className="h-px w-full bg-ink-200 sm:h-8 sm:w-px dark:bg-ink-700" />
+                <div className="sm:text-right">
+                  <p className="text-xs uppercase tracking-wide text-ink-500 dark:text-ink-400">
+                    To
+                  </p>
+                  <p className="font-semibold">{formatHumanDate(stats.dateTo)}</p>
+                </div>
               </div>
-              <div aria-hidden className="h-8 w-px bg-ink-200 dark:bg-ink-700" />
-              <div className="text-right">
-                <p className="text-xs uppercase tracking-wide text-ink-400">To</p>
-                <p className="font-semibold">{formatHumanDate(stats.dateTo)}</p>
-              </div>
-            </div>
+            </motion.div>
           )}
 
           {(stats.matched > 0 || stats.archiveDated > 0) && (
-            <p className="mt-4 text-center text-xs text-ink-400 dark:text-ink-500">
+            <motion.p
+              className="mt-4 text-center text-xs text-ink-500 dark:text-ink-400"
+              variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: spring } }}
+            >
               {stats.matched > 0 && `${formatCount(stats.matched)} matched with Snapchat dates`}
               {stats.matched > 0 && stats.archiveDated > 0 && ' · '}
               {stats.archiveDated > 0 &&
                 `${formatCount(stats.archiveDated)} recovered using archive dates`}
               {stats.undated > 0 &&
                 ` · ${formatCount(stats.undated)} kept without dates (none invented)`}
-            </p>
+            </motion.p>
           )}
 
           {isLinkOnly && (
@@ -151,7 +184,7 @@ export function ResultScreen({
           )}
 
           {(warnings.length > 0 || isLargeExport) && (
-            <ul className="mx-auto mt-4 max-w-md space-y-1 text-xs text-ink-400 dark:text-ink-500">
+            <ul className="mx-auto mt-4 max-w-md space-y-1 text-xs text-ink-500 dark:text-ink-400">
               {warnings.slice(0, 3).map((w) => (
                 <li key={w}>• {w}</li>
               ))}
@@ -187,19 +220,29 @@ export function ResultScreen({
                   aria-valuemin={0}
                   aria-valuemax={100}
                 >
-                  <div
-                    className="h-full rounded-full bg-brand-500 transition-all"
-                    style={{ width: `${Math.max(2, progressPct)}%` }}
+                  <motion.div
+                    className="h-full rounded-full bg-brand-500"
+                    animate={{ width: `${Math.max(2, progressPct)}%` }}
+                    transition={{ ease: 'easeOut', duration: 0.35 }}
                   />
                 </div>
-                <p className="mt-2 text-center text-sm text-ink-500 dark:text-ink-400">
+                <p className="mt-2 text-center text-sm tabular-nums text-ink-500 dark:text-ink-400">
                   Packing {formatCount(ex.progress.done)} of{' '}
                   {formatCount(ex.progress.total)} — keep this tab open
                 </p>
               </div>
             ) : ex.saved ? (
               <div className="text-center" aria-live="polite">
-                <p className="text-lg font-bold">Saved!</p>
+                <motion.span
+                  initial={{ scale: 0, rotate: -30 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ ...spring, delay: 0.05 }}
+                  className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-500 text-ink-950 shadow-card"
+                  aria-hidden
+                >
+                  <CheckIcon className="h-6 w-6" strokeWidth={3} />
+                </motion.span>
+                <p className="mt-3 text-lg font-bold">Saved!</p>
                 <p className="mt-1 text-sm text-ink-500 dark:text-ink-400">
                   Check your downloads for <strong>Snapchat Memories.zip</strong>
                   {ex.failureCount !== null && ex.failureCount > 0 && (
@@ -233,17 +276,17 @@ export function ResultScreen({
             <LiftButton type="button" className="btn-ghost text-sm" onClick={onAdvanced}>
               Review in Advanced Mode
             </LiftButton>
-            <p className="flex items-center gap-1.5 text-xs text-ink-400 dark:text-ink-500">
-              <LockIcon className="h-3.5 w-3.5" />
+            <p className="flex items-center gap-1.5 text-xs font-medium text-ink-500 dark:text-ink-400">
+              <LockIcon className="h-3.5 w-3.5 text-brand-700 dark:text-brand-300" />
               Your archive never left this device
             </p>
-            <p className="max-w-sm text-center text-xs text-ink-400 dark:text-ink-500">
+            <p className="max-w-sm text-center text-xs text-ink-500 dark:text-ink-400">
               Capture dates and locations are embedded into your files so Google
               Photos and Apple Photos sort them correctly.
             </p>
           </div>
-          </div>
         </motion.div>
+      </motion.div>
 
       <LiftButton type="button" className="btn-ghost mx-auto mt-6 block text-sm" onClick={onRestart}>
         Process another archive

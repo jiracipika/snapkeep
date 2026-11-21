@@ -91,9 +91,10 @@ function AdSlot({
 /**
  * Side rails: 160px wide skyscrapers, shown only from `xl` (1280px) up so the
  * middle column always keeps more than a 4:3 width-to-height share of the
- * viewport. `busy` adds the second rail unit while an archive is processing.
+ * viewport. Single slot per rail — a second unit during processing pushed the
+ * progress card below the fold (ads never intercept the core flow).
  */
-export function AdRail({ side, busy }: { side: 'left' | 'right'; busy: boolean }) {
+export function AdRail({ side }: { side: 'left' | 'right' }) {
   const slots = monetization.adSlots.rail
   return (
     <aside
@@ -107,15 +108,6 @@ export function AdRail({ side, busy }: { side: 'left' | 'right'; busy: boolean }
         insStyle={{ display: 'inline-block', width: 160, height: 600 }}
         className="h-[600px] w-40"
       />
-      {busy && slots[1] !== undefined && (
-        <AdSlot
-          slotId={slots[1]}
-          slotKey={`${side}-rail-2`}
-          format="vertical"
-          insStyle={{ display: 'inline-block', width: 160, height: 600 }}
-          className="h-[600px] w-40"
-        />
-      )}
     </aside>
   )
 }

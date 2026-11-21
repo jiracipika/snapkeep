@@ -72,9 +72,12 @@ export default function App() {
         Ad rails are hidden below xl (1280px) and fixed at 160px each, so the
         middle column keeps more than a 4:3 width-to-height share of common
         desktop viewports (e.g. 1440×900 leaves ~1024px of middle width).
+        Rails stay single-slot: stacking a second unit during processing made
+        the page ~1224px tall and pushed the progress card below the fold,
+        which broke the "ads never intercept the tool's core flow" line.
       */}
       <div className="mx-auto flex w-full max-w-[1400px] flex-1 items-stretch justify-center gap-6 px-4 sm:px-6">
-        <AdRail side="left" busy={screen === 'processing'} />
+        <AdRail side="left" />
         <div className="flex min-w-0 flex-1 flex-col">
           {screen === 'landing' && (
             <Landing mode={mode} onModeChange={setMode} onFiles={startScan} />
@@ -105,7 +108,7 @@ export default function App() {
             />
           )}
         </div>
-        <AdRail side="right" busy={screen === 'processing'} />
+        <AdRail side="right" />
       </div>
 
       <BottomAd />
