@@ -6,26 +6,33 @@ import { ThemeToggle } from './ThemeToggle'
 export function Header({
   theme,
   onToggleTheme,
+  showLandingLinks,
 }: {
   theme: 'light' | 'dark'
   onToggleTheme: () => void
+  showLandingLinks: boolean
 }) {
   const donate = donateLink()
   const tip = tipLink()
   return (
-    <header className="sticky top-0 z-40 border-b border-ink-200/60 bg-white/80 backdrop-blur-md dark:border-ink-800/60 dark:bg-ink-950/80">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+    <header className="site-header sticky top-0 z-40">
+      <div className="mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
         <a href="/" className="flex items-center gap-2.5" aria-label="Snapkeep home">
-          <GhostLogo className="h-8 w-8" />
-          <span className="text-lg font-bold tracking-tight">Snapkeep</span>
+          <GhostLogo className="size-8 shrink-0 sm:size-9" />
+          <span className="text-xl font-bold tracking-tight">Snapkeep</span>
         </a>
+        <nav aria-label="Main" className="site-nav hidden items-center gap-6 md:flex">
+          {showLandingLinks && <a href="#how-it-works">How it works</a>}
+          <a href="/guide/how-to-export-snapchat-memories/">Export guide</a>
+          {showLandingLinks && <a href="#faq">FAQ</a>}
+        </nav>
         <div className="flex items-center gap-1">
           {donate && (
             <LiftLink
               href={donate}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary !min-h-11 !rounded-full !px-4 !py-2 text-sm"
+              className="btn-secondary !min-h-11 !rounded-full !px-3 !py-2 text-sm sm:!px-4"
               aria-label="Donate via PayPal"
             >
               <HeartIcon className="h-4 w-4" />
@@ -48,7 +55,7 @@ export function Header({
             href="https://github.com/jiracipika/snapkeep"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-ghost !rounded-full !p-3"
+            className="btn-ghost !rounded-full !p-2.5 sm:!p-3"
             aria-label="View source on GitHub"
           >
             <GithubIcon className="h-5 w-5" />

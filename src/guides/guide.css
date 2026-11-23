@@ -4,30 +4,32 @@
    `snapkeep-theme` localStorage key as the app. */
 
 :root {
-  --bg: #ffffff;
-  --fg: #1e293b;
-  --muted: #64748b;
-  --border: #e2e8f0;
-  --card: #f8fafc;
-  --accent: #f2d500;
-  --accent-hover: #facc15;
-  --accent-fg: #060b16;
-  --link: #334155;
-  --link-strong: #0f172a;
-  --tip-bg: #fefce8;
-  --tip-border: #fef08a;
-  --header-bg: rgba(255, 255, 255, 0.8);
+  --bg: #faf9f5;
+  --fg: #23201b;
+  --muted: #655f55;
+  --border: #e4e0d8;
+  --card: #f5f2eb;
+  --accent: #f5d246;
+  --accent-hover: #f9dd6b;
+  --accent-fg: #171511;
+  --link: #554e44;
+  --link-strong: #23201b;
+  --tip-bg: #fcf9ed;
+  --tip-border: #e6ce7b;
+  --header-bg: rgba(250, 249, 245, 0.92);
 }
 
 html.dark {
-  --bg: #060b16;
-  --fg: #f1f5f9;
-  --muted: #94a3b8;
-  --border: #1e293b;
-  --card: #0f172a;
-  --header-bg: rgba(6, 11, 22, 0.8);
-  --tip-bg: rgba(242, 213, 0, 0.08);
-  --tip-border: #7a6800;
+  --bg: #171511;
+  --fg: #faf7ee;
+  --muted: #bdb4a5;
+  --border: #423b30;
+  --card: #23201b;
+  --link: #e5ded1;
+  --link-strong: #faf7ee;
+  --header-bg: rgba(23, 21, 17, 0.92);
+  --tip-bg: #2e281b;
+  --tip-border: #8b763d;
 }
 
 * {
