@@ -60,12 +60,14 @@ export function Landing({
               <p>Free to use · No account needed</p>
             </div>
           </div>
-          <ModeSelector mode={mode} onChange={onModeChange} />
+          {/* The action comes first; the mode is an option, and Easy is the
+              default, so nothing has to be decided before picking a file. */}
           <DropZone onFiles={onFiles} />
           <p className="import-privacy">
             <LockIcon className="size-4 shrink-0" />
             Your files stay on this device.
           </p>
+          <ModeSelector mode={mode} onChange={onModeChange} />
         </section>
       </section>
 

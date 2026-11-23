@@ -344,7 +344,9 @@
 
   .mode-selector {
     min-inline-size: 0;
-    margin-top: 1.35rem;
+    margin-top: 1.15rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--line);
   }
 
   .mode-selector legend {
@@ -405,6 +407,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.6rem;
+    margin-top: 1.35rem;
     padding: 1.2rem 0.65rem;
     border: 1px dashed var(--drop-border);
     border-radius: 1rem;
@@ -418,6 +421,11 @@
     background: var(--drop-hover);
   }
 
+  /* The whole zone opens the picker, so it points on devices that have a pointer. */
+  @media (hover: hover) and (pointer: fine) {
+    .import-drop { cursor: pointer; }
+  }
+
   .drop-mark {
     width: 2.6rem;
     height: 2.6rem;
@@ -428,6 +436,12 @@
   .drop-title {
     font-size: 0.9375rem;
     font-weight: 650;
+  }
+
+  /* A thumb cannot drag a file here. On touch-only devices the zone shows the
+     button and the multi-part note, and says nothing about dragging. */
+  @media (hover: none) and (pointer: coarse) {
+    .drop-title { display: none; }
   }
 
   .import-pick {
@@ -444,15 +458,35 @@
     line-height: 1.35;
   }
 
+  /* Short screens (a 568px-tall phone): the picker button still has to be in
+     the first screen, so the hero gives up air, not content. */
+  @media (max-height: 600px) {
+    .landing-hero { padding-top: 1.5rem; }
+    .landing-intro h1 { font-size: 2.25rem; }
+    .landing-summary { margin-top: 0.75rem; }
+    .import-drop { margin-top: 1rem; padding-block: 0.9rem; }
+    .drop-mark { display: none; }
+  }
+
   .import-privacy {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
-    margin-top: 1rem;
+    margin-top: 0.8rem;
   }
 
   .import-privacy svg { color: var(--deep-gold); }
+
+  /* No single word stranded on a paragraph's last line. */
+  .landing-summary,
+  .import-title p,
+  .mode-selector p,
+  .drop-formats,
+  .landing-steps p,
+  .landing-faq p {
+    text-wrap: pretty;
+  }
 
   .landing-steps,
   .landing-faq {
