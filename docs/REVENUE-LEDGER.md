@@ -125,3 +125,13 @@ are the lever that compounds.
   gated behind YouTube's one-time "advanced features" phone verification —
   user-gated.** Watch: first impressions/CTR in Studio within 48h; the funnel is
   short → pinned link → guide → tool. Scoreboard unchanged: $0.00 / 0 reels.
+- 2026-11-23 — **`snapkeep-bottom` had never rendered since the units went
+  live — fixed.** The unit sat as a centred flex item and shrank to zero width,
+  so AdSense skipped it at every viewport (`data-ad-status` never set; verified
+  headless against production). Below 1280px the hidden rails additionally
+  threw `No slot size for availableWidth=0`, which blocked the queue. The unit
+  now owns its full width, rails mount only while visible, unfilled units
+  collapse, and the "Ad" chip and caption appear only over a filled unit.
+  Verified on a local build: the unit is processed at 360, 390, 820 and 1440.
+  From this deploy on, its impressions are readable in the AdSense dashboard
+  under `snapkeep-bottom`. Scoreboard unchanged: $0.00 / 0 reels.

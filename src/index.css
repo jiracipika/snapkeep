@@ -158,6 +158,21 @@
     border-color: var(--line);
     background: var(--surface);
   }
+
+  /* An "Ad" label belongs to an ad. Until AdSense reports the unit filled
+     there is nothing to label, so the chip — and the bottom band's caption —
+     stay out of the way instead of floating over an empty box. Browsers
+     without :has() drop the rule and keep both visible, as before. */
+  .ad-unit:not(:has(ins.adsbygoogle[data-ad-status='filled'])) .ad-chip,
+  .ad-band:not(:has(ins.adsbygoogle[data-ad-status='filled'])) .ad-caption {
+    display: none;
+  }
+
+  /* Google's own recipe for an unsold impression: collapse it, so an unfilled
+     unit leaves no empty box behind (on phones it otherwise holds a square). */
+  ins.adsbygoogle[data-ad-status='unfilled'] {
+    display: none !important;
+  }
 }
 
 @layer components {

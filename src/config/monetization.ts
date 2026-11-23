@@ -7,8 +7,9 @@ export const monetization = {
   // Display-ad unit IDs from AdSense → Ads → By ad unit. An empty ID falls
   // back to a friendly house card instead of an (illegal) empty ad unit.
   adSlots: {
-    // 160×600 wide skyscrapers for the side rails; the second one only
-    // renders while an archive is being processed.
+    // 160×600 wide skyscrapers for the side rails. Both rails serve rail[0]:
+    // rails went single-slot so the progress card stays above the fold, which
+    // left rail[1] (snapkeep-rail-2) unused.
     rail: ['8284596304', '2601769648'],
     // Responsive horizontal (leaderboard) band at the very bottom.
     bottom: '2292893863',
