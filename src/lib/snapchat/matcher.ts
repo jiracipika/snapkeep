@@ -97,20 +97,28 @@ export function matchMedia(detection: Detection, records: MemoryMetadata[]): Mat
 
   // Overlay/main pairing (by name, independent of metadata). The overlay is
   // usually a PNG while the main is a JPG/MP4, so match on stem, not extension.
-  const pairSiblingPath = (item: MediaItem): string | null => {
-    const stem = stemOf(item.entryName)
-    const pairStem = overlayPairStem(stem)
-    if (!pairStem) return null
+  // Each item is filed under its path up to every dot in its basename, which
+  // makes a sibling one Map read. Searching the whole list per item made the
+  // scan quadratic: 36 s of frozen tab at 20,000 items, quadrupling per
+  // doubling (measured), so over a minute at 30,000.
+  const pairIndex = new Map<string, MediaItem>()
+  for (const item of items) {
+    const dirStart = item.entryName.lastIndexOf('/')
+    for (let dot = item.entryName.indexOf('.', dirStart + 1); dot !== -1; dot = item.entryName.indexOf('.', dot + 1)) {
+      const key = `${item.sourceFile}:${item.entryName.slice(0, dot)}`
+      // First item wins, exactly as items.find() returned the first match.
+      if (!pairIndex.has(key)) pairIndex.set(key, item)
+    }
+  }
+  const pairSiblingOf = (item: MediaItem): MediaItem | undefined => {
+    const pairStem = overlayPairStem(stemOf(item.entryName))
+    if (!pairStem) return undefined
     const dirStart = item.entryName.lastIndexOf('/')
     const dir = dirStart === -1 ? '' : item.entryName.slice(0, dirStart + 1)
-    return `${dir}${pairStem}.`
+    return pairIndex.get(`${item.sourceFile}:${dir}${pairStem}`)
   }
   for (const item of items) {
-    const pairPrefix = pairSiblingPath(item)
-    if (!pairPrefix) continue
-    const pairItem = items.find(
-      (c) => c !== item && c.sourceFile === item.sourceFile && c.entryName.startsWith(pairPrefix),
-    )
+    const pairItem = pairSiblingOf(item)
     if (pairItem) item.pairedEntryName = pairItem.entryName
   }
 
@@ -136,11 +144,7 @@ export function matchMedia(detection: Detection, records: MemoryMetadata[]): Mat
   // Overlays without their own date inherit their main's (same moment).
   for (const item of items) {
     if (item.role !== 'overlay' || item.timestampSource !== 'none') continue
-    const pairPrefix = pairSiblingPath(item)
-    if (!pairPrefix) continue
-    const pairItem = items.find(
-      (c) => c !== item && c.sourceFile === item.sourceFile && c.entryName.startsWith(pairPrefix),
-    )
+    const pairItem = pairSiblingOf(item)
     if (pairItem && pairItem.timestampSource !== 'none') {
       item.timestampMs = pairItem.timestampMs
       item.timestampSource = pairItem.timestampSource
@@ -158,7 +162,15 @@ export function matchMedia(detection: Detection, records: MemoryMetadata[]): Mat
   }
 
   const countable = items.filter((i) => i.role !== 'overlay')
-  const dated = countable.filter((i) => i.timestampMs !== null)
+  // Folded in a loop: spreading a six-figure array into Math.min() exceeds
+  // the engine's argument limit and throws.
+  let dateFrom: number | null = null
+  let dateTo: number | null = null
+  for (const item of countable) {
+    if (item.timestampMs === null) continue
+    if (dateFrom === null || item.timestampMs < dateFrom) dateFrom = item.timestampMs
+    if (dateTo === null || item.timestampMs > dateTo) dateTo = item.timestampMs
+  }
   const stats: ScanStats = {
     total: countable.length,
     photos: countable.filter((i) => i.kind === 'photo').length,
@@ -167,8 +179,8 @@ export function matchMedia(detection: Detection, records: MemoryMetadata[]): Mat
     archiveDated: countable.filter((i) => i.timestampSource === 'archive' || i.timestampSource === 'filename').length,
     undated: countable.filter((i) => i.timestampMs === null).length,
     overlays: items.length - countable.length,
-    dateFrom: dated.length ? Math.min(...dated.map((i) => i.timestampMs!)) : null,
-    dateTo: dated.length ? Math.max(...dated.map((i) => i.timestampMs!)) : null,
+    dateFrom,
+    dateTo,
   }
 
   return { items, stats }

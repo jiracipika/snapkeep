@@ -244,6 +244,79 @@ describe('matchMedia', () => {
     const { stats } = matchMedia(detection, records)
     expect(stats.total).toBe(5)
   })
+
+  const mediaEntry = (sourceFile: number, name: string): IndexedEntry => ({
+    sourceFile,
+    index: 0,
+    entry: {
+      name,
+      offset: 0,
+      compressedSize: 8,
+      size: 8,
+      method: 0,
+      flags: 0,
+      crc: 0,
+      mtimeMs: 1_700_000_000_000 + sourceFile,
+      encrypted: false,
+    },
+  })
+
+  it('pairs overlays and mains in linear time on large archives', () => {
+    // 30,000 files used to scan the whole list once per file, quadrupling
+    // per doubling: 36 s of frozen tab at 20,000 files (measured). Pairing
+    // must stay linear as archives grow.
+    const entries = Array.from({ length: 30_000 }, (_, i) =>
+      mediaEntry(0, `memories/2026-02-20_${i}-main.jpg`),
+    )
+    const started = performance.now()
+    const { items, stats } = matchMedia(detectArchive(entries), [])
+    const elapsed = performance.now() - started
+
+    expect(items).toHaveLength(30_000)
+    expect(stats.total).toBe(30_000)
+    // No metadata file, so the capture-style filename date is the source.
+    expect(stats.dateFrom).toBe(Date.UTC(2026, 1, 20))
+    expect(items.every((item) => item.pairedEntryName === null)).toBe(true)
+    // 0.17 s locally; generous bound so a loaded CI machine cannot flake.
+    expect(elapsed).toBeLessThan(5_000)
+  })
+
+  it('pairs by stem: first sibling wins, archive parts stay separate, dots in names are safe', () => {
+    const entries = [
+      mediaEntry(1, 'memories/x-overlay.png'),
+      mediaEntry(1, 'memories/x-overlay.webp'),
+      mediaEntry(1, 'memories/x-main.jpg'),
+      // Same names inside another archive part must not pair across parts.
+      mediaEntry(2, 'memories/x-main.jpg'),
+      // A folder with a dot and a stem with a dot.
+      mediaEntry(3, 'my.data/x.y-main.jpg'),
+      mediaEntry(3, 'my.data/x.y-overlay.png'),
+    ]
+    const { items } = matchMedia(detectArchive(entries), [])
+    const inPart = (sourceFile: number, entryName: string) =>
+      items.find((i) => i.sourceFile === sourceFile && i.entryName === entryName)!
+
+    expect(inPart(1, 'memories/x-main.jpg').pairedEntryName).toBe('memories/x-overlay.png')
+    expect(inPart(1, 'memories/x-overlay.png').pairedEntryName).toBe('memories/x-main.jpg')
+    expect(inPart(1, 'memories/x-overlay.webp').pairedEntryName).toBe('memories/x-main.jpg')
+    expect(inPart(2, 'memories/x-main.jpg').pairedEntryName).toBeNull()
+    expect(inPart(3, 'my.data/x.y-main.jpg').pairedEntryName).toBe('my.data/x.y-overlay.png')
+    expect(inPart(3, 'my.data/x.y-overlay.png').pairedEntryName).toBe('my.data/x.y-main.jpg')
+  })
+
+  it('reports the date range for six-figure archives', () => {
+    // The range used to be Math.min(...dates); spreading 130,000+ arguments
+    // throws RangeError, which failed the scan on very large exports.
+    const entries = Array.from({ length: 140_000 }, (_, i) => {
+      const indexed = mediaEntry(0, `memories/${i}-main.jpg`)
+      indexed.entry.mtimeMs = 1_600_000_000_000 + i * 1000
+      return indexed
+    })
+    const { stats } = matchMedia(detectArchive(entries), [])
+    expect(stats.total).toBe(140_000)
+    expect(stats.dateFrom).toBe(1_600_000_000_000)
+    expect(stats.dateTo).toBe(1_600_000_000_000 + 139_999 * 1000)
+  })
 })
 
 describe('messy export (hostile names, odd types)', () => {

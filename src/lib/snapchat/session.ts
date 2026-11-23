@@ -35,6 +35,8 @@ export class ArchiveSession {
   readonly result: ScanResult
   private readers: RangeReader[]
   private indexes: ZipIndex[]
+  /** Per source file: entry name -> position in the index. Built on first use. */
+  private entryPositions: (Map<string, number> | undefined)[] = []
 
   private constructor(
     sources: { name: string; size: number }[],
@@ -157,9 +159,28 @@ export class ArchiveSession {
     const index = this.indexes[item.sourceFile]
     const reader = this.readers[item.sourceFile]
     if (!index || !reader) throw new Error(`Missing source archive for ${item.entryName}`)
-    const indexed = index.entries.find((e) => e.name === item.entryName)
+    const indexed = index.entries[this.positionOf(item.sourceFile, item.entryName)]
     if (!indexed) throw new Error(`Entry vanished from index: ${item.entryName}`)
     await extractEntry(reader, indexed, sink)
+  }
+
+  /**
+   * Position of an item's entry inside its source index. Every export and
+   * thumbnail read used to scan the index linearly, which cost a 30,000-item
+   * export about three seconds of lookups alone (measured).
+   */
+  private positionOf(sourceFile: number, entryName: string): number {
+    let positions = this.entryPositions[sourceFile]
+    if (!positions) {
+      positions = new Map()
+      const entries = this.indexes[sourceFile]?.entries ?? []
+      for (let i = 0; i < entries.length; i++) {
+        // First entry wins, exactly as Array.find() returned the first match.
+        if (!positions.has(entries[i]!.name)) positions.set(entries[i]!.name, i)
+      }
+      this.entryPositions[sourceFile] = positions
+    }
+    return positions.get(entryName) ?? -1
   }
 
   /** Extracts one item fully into memory (small items: previews, hashes). */
