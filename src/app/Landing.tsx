@@ -1,5 +1,6 @@
 import { DropZone } from '@/components/DropZone'
-import { ArchiveIcon, DownloadIcon, LockIcon, PhotoIcon, UploadIcon } from '@/components/icons'
+import { ArchiveIcon, LockIcon, PhotoIcon } from '@/components/icons'
+import { MemoryPrints } from '@/components/MemoryPrints'
 import { ModeSelector, type Mode } from '@/components/ModeSelector'
 import { FAQS } from '@/config/seo'
 
@@ -7,17 +8,14 @@ const exportGuide = '/guide/how-to-export-snapchat-memories/'
 
 const steps = [
   {
-    icon: ArchiveIcon,
     title: 'Request your data',
     body: 'Open Settings in Snapchat, select My Data, and include Memories in your export.',
   },
   {
-    icon: UploadIcon,
     title: 'Open your ZIP',
     body: 'Download the ZIP from Snapchat and choose it in Snapkeep. You can select multiple parts together.',
   },
   {
-    icon: DownloadIcon,
     title: 'Save your Memories',
     body: 'Download a fresh ZIP with dated photos and videos organized into folders by year.',
   },
@@ -45,11 +43,7 @@ export function Landing({
           </p>
           <a className="landing-guide" href={exportGuide}>How to get your Snapchat ZIP</a>
 
-          <div className="memory-prints" aria-hidden="true">
-            <div className="memory-print"><span /></div>
-            <div className="memory-print"><span /></div>
-            <div className="memory-print"><span /></div>
-          </div>
+          <MemoryPrints />
         </div>
 
         <section className="import-card" aria-labelledby="import-title">
@@ -73,10 +67,12 @@ export function Landing({
 
       <section id="how-it-works" className="landing-steps" aria-labelledby="steps-title">
         <h2 id="steps-title">How it works</h2>
+        {/* A sequence, not a set: each step's number sits on the rule that
+            opens it, so the eye reads left to right (down the page on phones). */}
         <ol>
-          {steps.map(({ icon: Icon, title, body }) => (
+          {steps.map(({ title, body }, index) => (
             <li key={title}>
-              <Icon className="step-icon" />
+              <span className="step-index" aria-hidden="true">{index + 1}</span>
               <h3>{title}</h3>
               <p>{body}</p>
             </li>

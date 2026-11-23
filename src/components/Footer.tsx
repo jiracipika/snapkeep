@@ -3,7 +3,7 @@ import { GhostLogo } from './icons'
 
 export function Footer() {
   return (
-    <footer className="mt-auto border-t border-ink-200/60 py-8 dark:border-ink-800/60">
+    <footer className="site-footer mt-auto border-t border-ink-200/60 py-8 dark:border-ink-800/60">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 text-center text-sm text-ink-500 dark:text-ink-400 sm:px-6">
         <GhostLogo className="h-6 w-6 opacity-70" />
         <p className="max-w-md text-pretty">
@@ -40,7 +40,7 @@ export function Footer() {
             Recover deleted Memories
           </a>
         </nav>
-        <p className="text-xs">
+        <p className="text-xs text-pretty">
           Not affiliated with Snap Inc. Snapchat is a trademark of Snap Inc.
         </p>
       </div>

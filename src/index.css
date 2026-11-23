@@ -1,5 +1,35 @@
 @import 'tailwindcss';
 
+/* Display voice: Bricolage Grotesque, self-hosted (SIL OFL — licence in
+   public/fonts). Nothing leaves this origin to fetch it. Pinned to weight 750
+   and subset to Latin, 20 KB (scripts/subset-display-font.py).
+
+   `optional` keeps first paint unblocked and the layout unshifted: the face is
+   used when it has arrived by then, and otherwise on the next visit, rather
+   than swapping in after the fact and re-flowing the headline. */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 750;
+  font-display: optional;
+  src: url('/fonts/bricolage-grotesque-750-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+2000-206F, U+20AC, U+2122, U+2212, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 750;
+  font-display: optional;
+  src: url('/fonts/bricolage-grotesque-750-latin-ext.woff2') format('woff2');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 /* Class-based dark mode (toggleable, persisted in localStorage) */
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -7,6 +37,7 @@
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
     Arial, sans-serif;
+  --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
 
   /* Brand: subtle Snapchat-inspired yellow, tuned for contrast on light bg */
   --color-brand-50: #fefce8;
@@ -24,7 +55,9 @@
   --color-ink-100: #eeece7;
   --color-ink-200: #e4e0d8;
   --color-ink-300: #cbc5b9;
-  --color-ink-400: #a6a094;
+  /* Tertiary text only (it is used for nothing else): 4.6:1 or better on every
+     light surface, where the old #a6a094 managed 2.3-2.6:1. */
+  --color-ink-400: #736c62;
   --color-ink-500: #6d675d;
   --color-ink-600: #554e44;
   --color-ink-700: #403a31;
@@ -53,6 +86,7 @@
 
 :root.dark {
   --color-ink-500: #958a7c;
+  --color-ink-400: #a6a094; /* already 7:1 on the dark page; keeps its old value */
   --page: #171511;
   --surface: #23201b;
   --soft-surface: #2c2821;
@@ -88,6 +122,13 @@
     background: var(--page);
     color: var(--heading);
     caret-color: var(--focus);
+    /* Notched phones, landscape: keep content off the rounded corners. */
+    padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
+  }
+  /* Headings carry the display face; running text stays the platform's sans. */
+  h1,
+  h2 {
+    font-family: var(--font-display);
   }
   :focus-visible {
     @apply outline-2 outline-offset-2;
@@ -175,6 +216,12 @@
   }
 }
 
+/* Unlayered on purpose: it has to win over the footer's own py-8. Keeps the
+   last line clear of the home indicator on notched phones. */
+.site-footer {
+  padding-bottom: max(2rem, env(safe-area-inset-bottom));
+}
+
 @layer components {
   .site-header {
     border-bottom: 1px solid var(--line);
@@ -211,7 +258,7 @@
     font-size: clamp(2.65rem, 7.4cqi, 4.9rem);
     font-weight: 750;
     line-height: 0.98;
-    letter-spacing: -0.067em;
+    letter-spacing: -0.045em;
   }
 
   .landing-intro em {
@@ -253,6 +300,8 @@
     isolation: isolate;
   }
 
+  /* Resting angles and the hover lift live in MemoryPrints (motion), so they
+     animate together with the pointer follow on the inner span. */
   .memory-print {
     width: clamp(5.25rem, 12.5cqi, 8.625rem);
     padding: 0.35rem 0.35rem 0.95rem;
@@ -260,7 +309,7 @@
     border-radius: 0.275rem;
     background: #fffdf7;
     box-shadow: 0 0.35rem 0.75rem rgb(33 24 16 / 0.16);
-    transform: rotate(-8deg);
+    transition: box-shadow 280ms ease;
   }
 
   .memory-print + .memory-print {
@@ -269,24 +318,46 @@
 
   .memory-print:nth-child(2) {
     z-index: 1;
-    transform: translateY(-0.25rem) rotate(4deg);
   }
 
-  .memory-print:nth-child(3) {
-    transform: rotate(10deg);
+  .memory-print:hover {
+    z-index: 3;
+    box-shadow: 0 0.8rem 1.5rem rgb(33 24 16 / 0.24);
   }
 
-  .memory-print span {
+  .memory-print-shift,
+  .memory-print-shift > span {
     display: block;
+  }
+
+  .memory-print-shift > span {
     aspect-ratio: 8 / 7;
     border-radius: 0.1rem;
     background: url('/memory-contact-sheet.webp') left center / 300% 100% no-repeat;
   }
 
-  .memory-print:nth-child(2) span { background-position: center; }
-  .memory-print:nth-child(3) span { background-position: right center; }
+  .memory-print:nth-child(2) .memory-print-shift > span { background-position: center; }
+  .memory-print:nth-child(3) .memory-print-shift > span { background-position: right center; }
+
+  /* Phones tall enough to spare the room get the same three prints, tucked
+     under the archive card's top edge. Shorter screens go without rather than
+     push the picker button out of the first screen. */
+  @media (max-width: 767px) and (min-height: 700px) {
+    .memory-prints {
+      display: flex;
+      justify-content: center;
+      margin: 0.5rem 0 -2.1rem;
+      padding: 0;
+    }
+    .memory-print {
+      width: clamp(4.25rem, 20cqi, 5.5rem);
+      padding: 0.28rem 0.28rem 0.8rem;
+    }
+  }
 
   .import-card {
+    position: relative; /* paints over the prints tucked under its top edge */
+    z-index: 1;
     min-width: 0;
     padding: clamp(1rem, 2.9cqi, 1.875rem);
     border: 1px solid var(--line);
@@ -498,33 +569,40 @@
   .landing h2:not(#import-title) {
     font-size: clamp(1.6rem, 3.3cqi, 2.2rem);
     font-weight: 740;
-    letter-spacing: -0.045em;
+    letter-spacing: -0.04em;
     line-height: 1.12;
   }
 
+  /* Three steps in order. On phones they are rows down the page; from 37rem
+     they sit side by side, divided by hairlines. Each number straddles the
+     rule that opens its step. */
   .landing-steps ol {
-    display: grid;
-    gap: 0.75rem;
-    margin-top: 1.2rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--line);
   }
 
   .landing-steps li {
-    border: 1px solid var(--line);
-    border-radius: 1rem;
-    background: var(--surface);
-    padding: 1.1rem;
+    padding: 1.6rem 0 1.5rem;
+    border-bottom: 1px solid var(--line);
   }
 
-  .step-icon {
-    width: 1.25rem;
-    height: 1.25rem;
+  .step-index {
+    display: inline-block;
+    margin-top: -2.62rem; /* pulls the numeral up onto the rule */
+    padding-right: 0.4rem;
+    background: var(--page);
     color: var(--deep-gold);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 2.1rem;
+    font-style: italic;
+    line-height: 2.1rem;
   }
 
   .landing-steps h3 {
-    margin-top: 0.65rem;
+    margin-top: 0.7rem;
     font-size: 1.025rem;
     font-weight: 700;
+    letter-spacing: -0.015em;
   }
 
   .landing-steps p,
@@ -541,8 +619,12 @@
     margin-top: 3.2rem;
   }
 
-  .landing-faq > div:first-child {
-    max-width: 27ch;
+  .landing-faq > div:first-child p {
+    max-width: 30ch;
+  }
+
+  .landing-faq > div:first-child h2 {
+    max-width: 12ch;
   }
 
   .faq-list {
@@ -590,7 +672,21 @@
   }
 
   @container (min-width: 37rem) {
-    .landing-steps ol { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .landing-steps ol {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .landing-steps li {
+      padding: 1.6rem 1.6rem 0.5rem 0;
+      border-bottom: 0;
+    }
+    .landing-steps li + li {
+      padding-left: 1.6rem;
+      border-left: 1px solid var(--line);
+    }
+    .landing-steps li + li .step-index {
+      margin-left: -0.3rem; /* clear of the column rule */
+    }
     .landing-faq { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); }
   }
 

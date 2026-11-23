@@ -19,7 +19,7 @@ export function Header({
       <div className="mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
         <a href="/" className="flex items-center gap-2.5" aria-label="Snapkeep home">
           <GhostLogo className="size-8 shrink-0 sm:size-9" />
-          <span className="text-xl font-bold tracking-tight">Snapkeep</span>
+          <span className="font-display text-xl font-bold tracking-tight">Snapkeep</span>
         </a>
         <nav aria-label="Main" className="site-nav hidden items-center gap-6 md:flex">
           {showLandingLinks && <a href="#how-it-works">How it works</a>}

@@ -4,7 +4,17 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!-- Display face (20 KB, latin, weight 750). Preloaded so it is normally in
+         hand by the time React paints the headline; see @font-face in
+         src/index.css. -->
+    <link
+      rel="preload"
+      href="/fonts/bricolage-grotesque-750-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <title>Export Snapchat Memories as Photos &amp; Videos — Snapkeep</title>
     <meta
       name="description"
