@@ -66,7 +66,7 @@ export default function App() {
       >
         Skip to content
       </a>
-      <Header theme={theme} onToggleTheme={toggle} />
+      <Header theme={theme} onToggleTheme={toggle} showLandingLinks={screen === 'landing'} />
 
       {/*
         Ad rails are hidden below xl (1280px) and fixed at 160px each, so the
@@ -76,7 +76,7 @@ export default function App() {
         the page ~1224px tall and pushed the progress card below the fold,
         which broke the "ads never intercept the tool's core flow" line.
       */}
-      <div className="mx-auto flex w-full max-w-[1400px] flex-1 items-stretch justify-center gap-6 px-4 sm:px-6">
+      <div className="mx-auto flex w-full max-w-[1480px] flex-1 items-stretch justify-center gap-4 px-4 sm:px-6">
         <AdRail side="left" />
         <div className="flex min-w-0 flex-1 flex-col">
           {screen === 'landing' && (

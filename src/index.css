@@ -20,29 +20,51 @@
   --color-brand-800: #7a6800;
   --color-brand-900: #5c4f00;
 
-  --color-ink-50: #f8fafc;
-  --color-ink-100: #f1f5f9;
-  --color-ink-200: #e2e8f0;
-  --color-ink-300: #cbd5e1;
-  --color-ink-400: #94a3b8;
-  --color-ink-500: #64748b;
-  --color-ink-600: #475569;
-  --color-ink-700: #334155;
-  --color-ink-800: #1e293b;
-  --color-ink-900: #0f172a;
-  --color-ink-950: #060b16;
+  --color-ink-50: #f5f4f1;
+  --color-ink-100: #eeece7;
+  --color-ink-200: #e4e0d8;
+  --color-ink-300: #cbc5b9;
+  --color-ink-400: #a6a094;
+  --color-ink-500: #6d675d;
+  --color-ink-600: #554e44;
+  --color-ink-700: #403a31;
+  --color-ink-800: #302b25;
+  --color-ink-900: #23201b;
+  --color-ink-950: #171511;
 
-  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.06), 0 8px 24px rgb(15 23 42 / 0.07);
-  --shadow-lift: 0 2px 4px rgb(15 23 42 / 0.08), 0 16px 40px rgb(15 23 42 / 0.12);
-
-  --animate-dash-march: dash-march 0.9s linear infinite;
+  --shadow-card: 0 1px 2px rgb(35 32 27 / 0.05), 0 9px 25px rgb(35 32 27 / 0.07);
+  --shadow-lift: 0 2px 4px rgb(35 32 27 / 0.08), 0 16px 40px rgb(35 32 27 / 0.12);
 }
 
-/* Marching dashes for the drop-zone drag-over frame. */
-@keyframes dash-march {
-  to {
-    stroke-dashoffset: -18;
-  }
+:root {
+  --page: #faf9f5;
+  --surface: #fff;
+  --soft-surface: #f5f2eb;
+  --line: #e4e0d8;
+  --heading: #23201b;
+  --muted: #655f55;
+  --deep-gold: #835015;
+  --gold: #f5d246;
+  --drop: #fcf9ed;
+  --drop-hover: #fff4c8;
+  --drop-border: #b39f62;
+  --focus: #8a6516;
+}
+
+:root.dark {
+  --color-ink-500: #958a7c;
+  --page: #171511;
+  --surface: #23201b;
+  --soft-surface: #2c2821;
+  --line: #423b30;
+  --heading: #faf7ee;
+  --muted: #bdb4a5;
+  --deep-gold: #f0cc67;
+  --gold: #f5d246;
+  --drop: #2e281b;
+  --drop-hover: #41351c;
+  --drop-border: #8b763d;
+  --focus: #f0cc67;
 }
 
 @layer base {
@@ -62,15 +84,18 @@
     }
   }
   body {
-    @apply bg-white font-sans text-ink-800 antialiased dark:bg-ink-950 dark:text-ink-100;
+    @apply font-sans antialiased;
+    background: var(--page);
+    color: var(--heading);
+    caret-color: var(--focus);
   }
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-brand-500;
+    @apply outline-2 outline-offset-2;
+    outline-color: var(--focus);
   }
   ::selection {
     @apply bg-brand-200 text-ink-900;
   }
-  caret-color: var(--color-brand-600);
 
   /* Themed scrollbars: the parts of the page the browser draws by default
      should still speak the design's palette. */
@@ -115,15 +140,422 @@
     @apply active:scale-[0.98];
   }
   .btn-primary {
-    @apply bg-brand-500 text-ink-950 shadow-card hover:bg-brand-400;
+    @apply text-ink-950 shadow-card;
+    background: var(--gold);
+  }
+  .btn-primary:hover {
+    background: #f9dd6b;
   }
   .btn-secondary {
     @apply border border-ink-200 bg-white text-ink-700 hover:border-ink-300 hover:bg-ink-50 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-200 dark:hover:bg-ink-800;
   }
   .btn-ghost {
-    @apply text-ink-500 hover:bg-ink-100 hover:text-ink-700 dark:hover:bg-ink-800 dark:hover:text-ink-200;
+    @apply hover:bg-ink-100 hover:text-ink-700 dark:hover:bg-ink-800 dark:hover:text-ink-200;
+    color: var(--muted);
   }
   .card {
-    @apply rounded-3xl border border-ink-200/70 bg-white shadow-card dark:border-ink-800 dark:bg-ink-900;
+    @apply rounded-3xl border shadow-card;
+    border-color: var(--line);
+    background: var(--surface);
+  }
+}
+
+@layer components {
+  .site-header {
+    border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--page) 92%, transparent);
+    backdrop-filter: blur(12px);
+  }
+
+  .site-nav {
+    color: var(--muted);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .site-nav a:hover {
+    color: var(--heading);
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+
+  .landing {
+    container-type: inline-size;
+    padding-bottom: 3.5rem;
+  }
+
+  .landing-hero {
+    display: grid;
+    align-items: center;
+    gap: 2.25rem;
+    padding-block: clamp(2.5rem, 6.5cqi, 5rem) clamp(3rem, 6.5cqi, 5rem);
+  }
+
+  .landing-intro h1 {
+    max-width: 11ch;
+    font-size: clamp(2.65rem, 7.4cqi, 4.9rem);
+    font-weight: 750;
+    line-height: 0.98;
+    letter-spacing: -0.067em;
+  }
+
+  .landing-intro em {
+    color: var(--deep-gold);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 400;
+    letter-spacing: -0.075em;
+  }
+
+  .landing-summary {
+    max-width: 33ch;
+    margin-top: 1.15rem;
+    color: var(--muted);
+    font-size: clamp(1rem, 1.9cqi, 1.1875rem);
+    line-height: 1.55;
+  }
+
+  .landing-guide {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.85rem;
+    color: var(--heading);
+    font-size: 0.875rem;
+    font-weight: 650;
+    text-decoration: underline;
+    text-decoration-color: var(--drop-border);
+    text-underline-offset: 0.28em;
+  }
+
+  .landing-guide:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .memory-prints {
+    display: none;
+    align-items: center;
+    padding: 1.5rem 0.3rem 0.6rem;
+    isolation: isolate;
+  }
+
+  .memory-print {
+    width: clamp(5.25rem, 12.5cqi, 8.625rem);
+    padding: 0.35rem 0.35rem 0.95rem;
+    border: 1px solid #e5dfd2;
+    border-radius: 0.275rem;
+    background: #fffdf7;
+    box-shadow: 0 0.35rem 0.75rem rgb(33 24 16 / 0.16);
+    transform: rotate(-8deg);
+  }
+
+  .memory-print + .memory-print {
+    margin-left: -0.4rem;
+  }
+
+  .memory-print:nth-child(2) {
+    z-index: 1;
+    transform: translateY(-0.25rem) rotate(4deg);
+  }
+
+  .memory-print:nth-child(3) {
+    transform: rotate(10deg);
+  }
+
+  .memory-print span {
+    display: block;
+    aspect-ratio: 8 / 7;
+    border-radius: 0.1rem;
+    background: url('/memory-contact-sheet.webp') left center / 300% 100% no-repeat;
+  }
+
+  .memory-print:nth-child(2) span { background-position: center; }
+  .memory-print:nth-child(3) span { background-position: right center; }
+
+  .import-card {
+    min-width: 0;
+    padding: clamp(1rem, 2.9cqi, 1.875rem);
+    border: 1px solid var(--line);
+    border-radius: 1.5rem;
+    background: var(--surface);
+    box-shadow: 0 1px 2px rgb(26 20 10 / 0.04), 0 14px 40px -18px rgb(26 20 10 / 0.24);
+  }
+
+  .import-title {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .import-title h2 {
+    font-size: clamp(1.25rem, 2.35cqi, 1.625rem);
+    font-weight: 750;
+    letter-spacing: -0.04em;
+    line-height: 1.2;
+  }
+
+  .import-title p,
+  .mode-selector p,
+  .drop-formats,
+  .import-privacy {
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+
+  .import-title p {
+    margin-top: 0.2rem;
+  }
+
+  .import-mark,
+  .drop-mark {
+    display: grid;
+    flex: none;
+    place-items: center;
+    color: var(--deep-gold);
+  }
+
+  .import-mark {
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--line);
+    border-radius: 0.7rem;
+    background: var(--soft-surface);
+  }
+
+  .import-mark svg,
+  .drop-mark svg {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .mode-selector {
+    min-inline-size: 0;
+    margin-top: 1.35rem;
+  }
+
+  .mode-selector legend {
+    margin-bottom: 0.4rem;
+    font-size: 0.875rem;
+    font-weight: 650;
+  }
+
+  .mode-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border: 1px solid var(--line);
+    border-radius: 0.7rem;
+    background: var(--soft-surface);
+  }
+
+  .mode-options span {
+    display: grid;
+    min-height: 2.5rem;
+    place-items: center;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 650;
+  }
+
+  .mode-options label { position: relative; }
+
+  .mode-options input:checked + span {
+    border-color: var(--line);
+    background: var(--surface);
+    box-shadow: 0 1px 2px rgb(26 20 10 / 0.08);
+    color: var(--heading);
+  }
+
+  .mode-options label:hover span {
+    color: var(--heading);
+  }
+
+  .mode-options input:focus-visible + span {
+    outline: 2px solid var(--focus);
+    outline-offset: -2px;
+  }
+
+  .mode-selector p {
+    min-block-size: 2.5rem;
+    margin-top: 0.4rem;
+    line-height: 1.35;
+  }
+
+  .import-drop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 1.2rem 0.65rem;
+    border: 1px dashed var(--drop-border);
+    border-radius: 1rem;
+    background: var(--drop);
+    text-align: center;
+    transition: background-color 160ms, border-color 160ms;
+  }
+
+  .import-drop[data-drag-over='true'] {
+    border-color: var(--focus);
+    background: var(--drop-hover);
+  }
+
+  .drop-mark {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--gold) 20%, var(--drop));
+  }
+
+  .drop-title {
+    font-size: 0.9375rem;
+    font-weight: 650;
+  }
+
+  .import-pick {
+    min-height: 2.75rem;
+    margin-block: 0.1rem 0.05rem;
+    border-radius: 0.65rem;
+    padding-inline: 1.35rem;
+    font-size: 0.9375rem;
+    font-weight: 750;
+  }
+
+  .drop-formats {
+    max-width: 32ch;
+    line-height: 1.35;
+  }
+
+  .import-privacy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 1rem;
+  }
+
+  .import-privacy svg { color: var(--deep-gold); }
+
+  .landing-steps,
+  .landing-faq {
+    border-top: 1px solid var(--line);
+    padding-top: 2rem;
+    scroll-margin-top: 5.2rem;
+  }
+
+  .landing h2:not(#import-title) {
+    font-size: clamp(1.6rem, 3.3cqi, 2.2rem);
+    font-weight: 740;
+    letter-spacing: -0.045em;
+    line-height: 1.12;
+  }
+
+  .landing-steps ol {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1.2rem;
+  }
+
+  .landing-steps li {
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    background: var(--surface);
+    padding: 1.1rem;
+  }
+
+  .step-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--deep-gold);
+  }
+
+  .landing-steps h3 {
+    margin-top: 0.65rem;
+    font-size: 1.025rem;
+    font-weight: 700;
+  }
+
+  .landing-steps p,
+  .landing-faq p {
+    margin-top: 0.4rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .landing-faq {
+    display: grid;
+    gap: 1.35rem;
+    margin-top: 3.2rem;
+  }
+
+  .landing-faq > div:first-child {
+    max-width: 27ch;
+  }
+
+  .faq-list {
+    border-top: 1px solid var(--line);
+  }
+
+  .faq-list details {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .faq-list summary {
+    display: flex;
+    min-height: 3.25rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.75rem;
+    cursor: pointer;
+    font-size: 0.9375rem;
+    font-weight: 650;
+    list-style: none;
+  }
+
+  .faq-list summary::-webkit-details-marker { display: none; }
+  .faq-list summary:hover { color: var(--deep-gold); }
+
+  .faq-list summary::after {
+    width: 0.5rem;
+    height: 0.5rem;
+    flex: none;
+    margin-right: 0.25rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    color: var(--muted);
+    content: '';
+    transform: translateY(-0.16rem) rotate(45deg);
+  }
+
+  .faq-list details[open] summary::after {
+    transform: translateY(0.13rem) rotate(225deg);
+  }
+
+  .faq-list details p {
+    margin: 0 1.25rem 0.85rem 0;
+  }
+
+  @container (min-width: 37rem) {
+    .landing-steps ol { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .landing-faq { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); }
+  }
+
+  @container (min-width: 47rem) {
+    .landing-hero {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      gap: clamp(2rem, 6cqi, 4.5rem);
+    }
+
+    .memory-prints { display: flex; }
+  }
+
+  @container (max-width: 46.99rem) {
+    .landing-intro h1 { max-width: 14ch; }
+    .import-card { max-width: 34rem; }
   }
 }
